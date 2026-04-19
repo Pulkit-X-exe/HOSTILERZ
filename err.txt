@@ -1,0 +1,11 @@
+Error: Unrecognized datatype for attribute "GatePass.qr_code"
+    at D:\college stuff\hostilerz-backend\node_modules\sequelize\lib\model.js:726:15
+    at D:\college stuff\hostilerz-backend\node_modules\lodash\lodash.js:13508:38
+    at D:\college stuff\hostilerz-backend\node_modules\lodash\lodash.js:5006:15
+    at baseForOwn (D:\college stuff\hostilerz-backend\node_modules\lodash\lodash.js:3032:24)
+    at lodash.mapValues (D:\college stuff\hostilerz-backend\node_modules\lodash\lodash.js:13507:7)
+    at GatePass.init (D:\college stuff\hostilerz-backend\node_modules\sequelize\lib\model.js:723:28)
+    at Sequelize.define (D:\college stuff\hostilerz-backend\node_modules\sequelize\lib\sequelize.js:225:11)
+    at Object.<anonymous> (D:\college stuff\hostilerz-backend\models\GatePass.js:5:28)
+    at Module._compile (node:internal/modules/cjs/loader:1761:14)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)

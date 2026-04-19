@@ -1,0 +1,3283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HOSTILERZ · KRMU</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue: #3B5BDB;
+  --blue-soft: #E7ECFD;
+  --blue-mid: #BAC8FF;
+  --blue-dark: #2F4AC6;
+  --ink: #111827;
+  --ink2: #374151;
+  --muted: #6B7280;
+  --faint: #9CA3AF;
+  --bg: #F5F7FA;
+  --white: #FFFFFF;
+  --border: #E5E7EB;
+  --border2: #D1D5DB;
+  --green: #059669;
+  --green-bg: #ECFDF5;
+  --green-bd: #A7F3D0;
+  --amber: #D97706;
+  --amber-bg: #FFFBEB;
+  --amber-bd: #FDE68A;
+  --red: #DC2626;
+  --red-bg: #FEF2F2;
+  --red-bd: #FECACA;
+  --teal: #0891B2;
+  --teal-bg: #F0F9FF;
+  --teal-bd: #BAE6FD;
+  --r: 10px;
+  --r2: 14px;
+  --r3: 20px;
+}
+
+* { font-family: 'Sora', sans-serif; }
+body { background: var(--bg); min-height: 100vh; }
+/* Auth Flicker Fix Hide Elements */
+body.has-session #land, 
+body.has-session #login { display: none !important; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+@keyframes shimmer { 0% { transform: translateX(-100%) rotate(45deg); } 100% { transform: translateX(100%) rotate(45deg); } }
+
+.glass-card { background: rgba(255, 255, 255, 0.7) !important; backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.4) !important; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07) !important; }
+.premium-card { position: relative; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.premium-card:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important; }
+.premium-card::after { content: ''; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.08), transparent); transform: rotate(45deg); animation: shimmer 6s infinite linear; pointer-events: none; }
+.pulse-indicator { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; margin-right: 6px; box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
+
+/* ── LANDING ── */
+</style>
+<script>
+  (function() {
+    if (localStorage.getItem('token') && localStorage.getItem('user')) {
+      document.body.classList.add('has-session');
+    }
+  })();
+</script>
+<style>
+#land {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+}
+
+.top-bar {
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue), #748FFC, #91A7FF);
+}
+
+.l-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-logo {
+  width: 32px;
+  height: 32px;
+  background: var(--blue);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-logo svg {
+  width: 18px;
+  height: 18px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.brand-text {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.4px;
+}
+
+.brand-text b { color: var(--blue); }
+
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px 32px;
+  text-align: center;
+}
+
+.live-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--green-bg);
+  border: 1px solid var(--green-bd);
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.4s ease both;
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+}
+
+.hero-title {
+  font-size: clamp(28px, 6vw, 46px);
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.15;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+  animation: fadeUp 0.4s 0.07s ease both;
+}
+
+.hero-title span { color: var(--blue); }
+
+.hero-sub {
+  font-size: 14px;
+  color: var(--muted);
+  max-width: 360px;
+  line-height: 1.65;
+  margin-bottom: 32px;
+  font-weight: 500;
+  animation: fadeUp 0.4s 0.13s ease both;
+}
+
+.stats-row {
+  display: flex;
+  gap: 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  overflow: hidden;
+  margin-bottom: 36px;
+  animation: fadeUp 0.4s 0.18s ease both;
+}
+
+.stat { padding: 12px 20px; text-align: center; }
+.stat + .stat { border-left: 1px solid var(--border); }
+.stat-n { font-size: 16px; font-weight: 800; color: var(--ink); font-family: 'JetBrains Mono', monospace; }
+.stat-l { font-size: 10px; font-weight: 600; color: var(--faint); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+.role-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--faint);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+  text-align: left;
+  width: 100%;
+  max-width: 440px;
+  animation: fadeUp 0.4s 0.22s ease both;
+}
+
+.roles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 440px;
+  animation: fadeUp 0.4s 0.25s ease both;
+}
+
+.role-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r2);
+  padding: 18px 10px 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.role-card:hover {
+  border-color: var(--blue);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(59,91,219,0.1);
+}
+
+.role-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.role-name { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+.role-sub { font-size: 10px; color: var(--faint); font-weight: 500; }
+
+.l-foot {
+  padding: 14px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--faint);
+}
+
+.l-foot a { color: var(--faint); text-decoration: none; margin-left: 14px; }
+.l-foot a:hover { color: var(--blue); }
+
+/* ── LOGIN ── */
+#login {
+  display: none;
+  min-height: 100vh;
+  background: var(--bg);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#login.show { display: flex; }
+
+.login-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px 28px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  animation: fadeUp 0.25s ease both;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 20px;
+  transition: color 0.15s;
+}
+.back-btn:hover { color: var(--blue); }
+.back-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+.role-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.login-title { font-size: 22px; font-weight: 800; color: var(--ink); letter-spacing: -0.4px; margin-bottom: 3px; }
+.login-sub { font-size: 12px; color: var(--muted); margin-bottom: 22px; }
+
+.err-box {
+  background: var(--red-bg);
+  border: 1px solid var(--red-bd);
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 9px 12px;
+  border-radius: var(--r);
+  margin-bottom: 12px;
+  display: none;
+}
+
+.field { margin-bottom: 11px; }
+.field label { font-size: 11px; font-weight: 700; color: var(--ink2); display: block; margin-bottom: 4px; letter-spacing: 0.03em; }
+.field input, .field select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--border2);
+  border-radius: var(--r);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 13px;
+  outline: none;
+  font-family: 'Sora', sans-serif;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  appearance: none;
+}
+.field input:focus, .field select:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(59,91,219,0.08);
+}
+.field input::placeholder { color: var(--faint); }
+
+.sign-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: var(--r);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: all 0.15s;
+  font-family: 'Sora', sans-serif;
+}
+.sign-btn:hover { background: var(--blue-dark); box-shadow: 0 4px 12px rgba(59,91,219,0.25); }
+.sign-btn:active { transform: scale(0.99); }
+
+.demo-hint { text-align: center; margin-top: 10px; font-size: 11px; color: var(--faint); }
+
+/* ── APP SHELL ── */
+.app { display: none; height: 100vh; overflow: hidden; flex-direction: column; max-width: 480px; margin: 0 auto; background: var(--bg); }
+.app.on { display: flex; }
+
+.app-header { padding: 14px 16px 12px; flex-shrink: 0; position: sticky; top: 0; z-index: 1000; background: inherit; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.header-row { display: flex; justify-content: space-between; align-items: center; }
+.h-greet { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.65); margin-bottom: 1px; }
+.h-name { font-size: 17px; font-weight: 800; color: #fff; letter-spacing: -0.3px; }
+.h-meta { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+.h-right { display: flex; align-items: center; gap: 8px; }
+.h-avatar { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; background: rgba(255,255,255,0.2); color: #fff; border: 1.5px solid rgba(255,255,255,0.3); }
+.logout-btn { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22); color: rgba(255,255,255,0.88); font-size: 11px; font-weight: 700; padding: 5px 11px; border-radius: 20px; cursor: pointer; font-family: 'Sora', sans-serif; }
+.logout-btn:hover { background: rgba(255,255,255,0.22); }
+
+.tab-bar {
+  display: flex;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex-shrink: 0;
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  flex: 1;
+  min-width: 52px;
+  padding: 9px 4px 7px;
+  border: none;
+  background: transparent;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--faint);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  transition: color 0.15s;
+  white-space: nowrap;
+  font-family: 'Sora', sans-serif;
+}
+.tab-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.tab-btn.on { color: var(--blue); }
+.tab-ind { display: block; width: 14px; height: 2px; border-radius: 2px; background: transparent; transition: background 0.15s; }
+.tab-btn.on .tab-ind { background: var(--blue); }
+
+.page-body { flex: 1; overflow-y: auto; padding: 12px; scroll-behavior: smooth; }
+.section { display: none; }
+.section.on { display: block; animation: fadeUp 0.2s ease both; }
+
+/* ── COMPONENTS ── */
+.card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r2); padding: 14px 16px; margin-bottom: 10px; }
+.card-title { font-size: 9.5px; font-weight: 700; color: var(--faint); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 11px; }
+
+.row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 12.5px; }
+.row:last-child { border-bottom: none; padding-bottom: 0; }
+.rl { color: var(--muted); font-weight: 500; }
+.rv { font-weight: 700; color: var(--ink); }
+
+.pill { display: inline-flex; align-items: center; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px; }
+.pg { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-bd); }
+.pa { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-bd); }
+.pb { background: var(--blue-soft); color: var(--blue); border: 1px solid var(--blue-mid); }
+.pr { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-bd); }
+.pt { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-bd); }
+
+.metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.metric { background: var(--white); border: 1px solid var(--border); border-radius: var(--r2); padding: 12px 14px; }
+.m-val { font-size: 22px; font-weight: 800; color: var(--ink); font-family: 'JetBrains Mono', monospace; letter-spacing: -0.5px; }
+.m-label { font-size: 10px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+
+.notice { border-radius: var(--r); padding: 11px 13px; margin-bottom: 9px; border-left: 3px solid; }
+.n-title { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+.n-body { font-size: 11px; line-height: 1.5; }
+
+.f-label { font-size: 11px; font-weight: 700; color: var(--ink2); display: block; margin-bottom: 4px; }
+input[type=text], input[type=password], select, textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px solid var(--border2);
+  border-radius: var(--r);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 12.5px;
+  outline: none;
+  margin-bottom: 9px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  appearance: none;
+  font-family: 'Sora', sans-serif;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(59,91,219,0.08);
+}
+textarea { height: 68px; resize: none; }
+input::placeholder { color: var(--faint); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; font-size: 12.5px; font-weight: 700; border-radius: var(--r); cursor: pointer; border: none; padding: 10px 16px; transition: all 0.15s; font-family: 'Sora', sans-serif; }
+.btn:active { transform: scale(0.98); }
+.btn-primary { background: var(--blue); color: #fff; width: 100%; margin-top: 4px; }
+.btn-primary:hover { background: var(--blue-dark); }
+.btn-outline { background: transparent; color: var(--blue); border: 1.5px solid var(--blue); width: 100%; margin-top: 6px; }
+.btn-outline:hover { background: var(--blue-soft); }
+.btn-success { background: var(--green); color: #fff; }
+.btn-danger { background: var(--red); color: #fff; }
+.btn-sm { font-size: 11px; padding: 5px 12px; width: auto; margin-top: 0; }
+
+.list-item { padding: 10px 0; border-bottom: 1px solid var(--border); }
+.list-item:last-child { border-bottom: none; }
+.li-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.li-title { font-size: 12.5px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+.li-meta { font-size: 10.5px; color: var(--faint); }
+
+.tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+.tbl th { text-align: left; font-size: 9.5px; font-weight: 700; color: var(--faint); letter-spacing: 0.06em; text-transform: uppercase; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+.tbl td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--ink2); vertical-align: middle; }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tr:hover td { background: var(--bg); }
+
+.room-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); 
+  gap: 12px; 
+  margin-bottom: 20px;
+  width: 100%;
+}
+.room-cell { 
+  aspect-ratio: 1; 
+  border-radius: 12px; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 11.5px; 
+  font-weight: 800; 
+  cursor: pointer; 
+  border: 1.5px solid; 
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+  background: var(--white);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+.room-cell:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+.room-cell span { font-size: 8.5px; font-weight: 700; margin-top: 1px; opacity: 0.7; }
+
+.rc-occ { background: var(--blue-soft) !important; color: var(--blue) !important; border-color: rgba(59, 91, 219, 0.2) !important; }
+.rc-vac { background: var(--green-bg) !important; color: var(--green) !important; border-color: rgba(9, 146, 104, 0.2) !important; }
+.rc-mnt { background: var(--amber-bg) !important; color: var(--amber) !important; border-color: rgba(240, 140, 0, 0.2) !important; }
+
+.bar-row { margin-bottom: 9px; }
+.bar-top { display: flex; justify-content: space-between; font-size: 11.5px; font-weight: 700; margin-bottom: 4px; }
+.bar-bg { background: var(--bg); border-radius: 4px; height: 6px; }
+.bar-fill { height: 6px; border-radius: 4px; }
+
+.progress-bg { background: var(--bg); border-radius: 4px; height: 6px; margin: 8px 0 4px; }
+.progress-fill { height: 6px; border-radius: 4px; }
+
+.qr-wrap { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; display: flex; flex-direction: column; align-items: center; margin: 10px 0; }
+.qr-grid { display: grid; grid-template-columns: repeat(11, 9px); grid-template-rows: repeat(11, 9px); gap: 2px; }
+
+.vi-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); }
+.vi-row:last-child { border-bottom: none; }
+.vi-name { font-size: 12.5px; font-weight: 700; color: var(--ink); }
+.vi-meta { font-size: 10.5px; color: var(--faint); margin-top: 1px; }
+
+.avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; flex-shrink: 0; }
+.pid { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--blue); }
+
+.room-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.room-num { width: 56px; height: 56px; border-radius: 13px; background: var(--blue-soft); border: 1.5px solid var(--blue-mid); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; color: var(--blue); flex-shrink: 0; }
+
+/* Google Font import karo - top mein add karo */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Raleway:wght@300;400&display=swap');
+
+/* footer {
+  background: linear-gradient(135deg, #0f0c29, #1a1a2e, #16213e);
+  padding: 30px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 200, 0, 0.2);
+}
+
+/* Background animated glow effect */
+footer::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at center, rgba(255, 180, 0, 0.05) 0%, transparent 60%);
+  animation: pulse-glow 4s ease-in-out infinite;
+  pointer-events: none;
+} */
+
+/* @keyframes pulse-glow {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 1; }
+} */
+
+.team {
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 0.95rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: transparent;
+  background: linear-gradient(90deg, #f7c948, #fff5cc, #f7c948);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+  position: relative;
+  display: inline-block;
+}
+
+/* Pirate skull decorative symbols */
+.team::before {
+  content: '☠ ';
+  color: #f7c948;
+  opacity: 0.8;
+}
+
+.team::after {
+  content: ' ☠';
+  color: #f7c948;
+  opacity: 0.8;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@media (max-width: 480px) {
+  .roles { grid-template-columns: 1fr; }
+  .stats-row { flex-wrap: wrap; }
+  .l-foot { flex-direction: column; gap: 8px; text-align: center; }
+}
+
+@media (min-width: 768px) {
+  .app.on {
+    display: grid !important;
+    grid-template-columns: 240px 1fr;
+    grid-template-rows: auto 1fr;
+    max-width: 100%;
+  }
+  .app-header { grid-column: 1 / -1; padding: 18px 40px; }
+  .h-name { font-size: 20px; }
+  
+  .tab-bar {
+    flex-direction: column !important;
+    justify-content: flex-start;
+    border-right: 1px solid var(--border);
+    border-bottom: none;
+    height: 100%;
+  }
+  .tab-btn {
+    flex: none;
+    flex-direction: row;
+    padding: 16px 24px;
+    font-size: 13.5px;
+    font-weight: 600;
+    gap: 14px;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+    justify-content: flex-start;
+  }
+  .tab-ind { width: 4px; height: 100%; position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0; transition: background 0.2s;}
+  .tab-btn svg { width: 18px; height: 18px; }
+  
+  .page-body { 
+    padding: 30px 40px; 
+    background: #fafbfc; 
+    overflow-y: auto; 
+    height: calc(100vh - 74px);
+  }
+  .section.on { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
+    gap: 20px; 
+    align-items: flex-start; 
+  }
+  
+  .metrics { grid-column: 1 / -1; grid-template-columns: repeat(4, 1fr) !important; gap: 20px; margin-bottom: 0; }
+  .card { margin-bottom: 0; height: 100%; }
+  .card[style*="padding:0"] { grid-column: 1 / -1; }
+  
+  #student-notice-list { grid-column: 1 / -1; }
+  .room-grid { grid-template-columns: repeat(8, 1fr); gap: 12px; }
+  
+  .metrics .metric { padding: 20px; }
+  .metrics .m-val { font-size: 28px; }
+}
+
+/* ── TOAST CONTAINER ── */
+#toast-container { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 9999; }
+.toast { background: var(--ink); color: #fff; padding: 14px 20px; border-radius: var(--r); font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; min-width: 280px; }
+.toast.toast-error { border-left: 4px solid var(--red); }
+.toast.toast-success { border-left: 4px solid var(--green); }
+.toast.toast-info { border-left: 4px solid var(--blue); }
+.toast.fade-out { animation: toastOut 0.3s ease forwards; }
+@keyframes toastIn { from { transform: translateX(110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+  /* Modal System */
+  .modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+    display: none; align-items: center; justify-content: center; z-index: 10000;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-content {
+    background: #fff; border-radius: 20px;
+    width: 90%; max-width: 400px; padding: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  }
+  .modal-actions { display: flex; gap: 12px; margin-top: 20px; }
+  .modal-title { font-size: 18px; font-weight: 800; color: var(--ink); margin-bottom: 8px; }
+  .modal-text { font-size: 14px; color: var(--ink2); line-height: 1.5; }
+</style>
+</head>
+<body>
+<div id="toast-container"></div>
+
+<!-- Confirmation Modal -->
+<div id="confirm-modal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-title" id="m-title">Confirm Action</div>
+    <div class="modal-text" id="m-text">Are you sure you want to proceed?</div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" style="flex:1;" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" style="flex:1;" id="m-confirm-btn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- LANDING -->
+<div id="land">
+  <div class="top-bar"></div>
+  <div class="l-nav">
+    <div class="brand">
+      <div class="brand-logo">
+        <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M9 21V12h6v9"/></svg>
+      </div>
+      <div class="brand-text"><b>HOSTILERZ</b></div>
+    </div>
+    <div class="badge">KRMU · 2025–26</div>
+  </div>
+  <div class="hero">
+    <div class="live-chip"><span class="live-dot"></span>All systems active</div>
+    <h1 class="hero-title">Your hostel,<br/><span>all in one place</span></h1>
+    <p class="hero-sub">Manage your room, fees, complaints and gate passes — no queues, no calls.</p>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-n" id="stat-rooms">...</div><div class="stat-l">Rooms</div></div>
+      <div class="stat"><div class="stat-n" id="stat-students">...</div><div class="stat-l">Students</div></div>
+      <div class="stat"><div class="stat-n" id="stat-blocks">2</div><div class="stat-l">Blocks (A & B)</div></div>
+      <div class="stat"><div class="stat-n">99%</div><div class="stat-l">Uptime</div></div>
+    </div>
+    <div class="role-label">Sign in as</div>
+    <div class="roles">
+      <div class="role-card" onclick="showLogin('student')">
+        <div class="role-icon" style="background:var(--blue-soft);">🎓</div>
+        <div class="role-name">Student</div>
+        <div class="role-sub">Room · Fees · Gate pass</div>
+      </div>
+      <div class="role-card" onclick="showLogin('admin')">
+        <div class="role-icon" style="background:var(--green-bg);">🏛️</div>
+        <div class="role-name">Admin</div>
+        <div class="role-sub">Rooms · Reports · Notices</div>
+      </div>
+      <div class="role-card" onclick="showLogin('warden')">
+        <div class="role-icon" style="background:var(--amber-bg);">🔑</div>
+        <div class="role-name">Warden</div>
+        <div class="role-sub">Attendance · Visitors</div>
+      </div>
+    </div>
+  </div>
+  <div class="l-foot">
+    <span>© 2025 HOSTILERZ · KRMU</span>
+    <div><a href="#">Help</a><a href="#">Privacy</a><a href="#">Contact</a></div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="login-card">
+    <button class="back-btn" onclick="showLand()">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back
+    </button>
+    <div class="role-pill" id="rpill">🎓 Student</div>
+    <div class="login-title" id="ltitle">Welcome back</div>
+    <div class="login-sub" id="lsub">Sign in to continue to HOSTILERZ</div>
+    <div class="err-box" id="lerr">Please fill in all fields.</div>
+
+    <div id="sf">
+      <div class="field"><label>ROLL NUMBER</label><input type="text" id="sroll" placeholder="e.g. 2021CSE042"/></div>
+      <div class="field"><label>PASSWORD</label><input type="password" id="spass" placeholder="Enter password"/></div>
+    </div>
+    <div id="af" style="display:none">
+      <div class="field"><label>ADMIN ID</label><input type="text" id="aid" placeholder="e.g. ADMIN001"/></div>
+      <div class="field"><label>PASSWORD</label><input type="password" id="apass" placeholder="Enter password"/></div>
+    </div>
+    <div id="wf" style="display:none">
+      <div class="field"><label>WARDEN ID</label><input type="text" id="wid" placeholder="e.g. WRD-B01"/></div>
+      <div class="field"><label>BLOCK</label><select id="wblk"><option value="A">Block A (Boys)</option><option value="B">Block B (Girls)</option></select></div>
+      <div class="field"><label>PASSWORD</label><input type="password" id="wpass" placeholder="Enter password"/></div>
+    </div>
+
+    <button class="sign-btn" id="sbtn" onclick="doLogin()">Sign in →</button>
+    <div class="demo-hint">Type anything in the fields to demo login</div>
+  </div>
+</div>
+
+<!-- STUDENT APP -->
+<div class="app" id="appS">
+  <div class="app-header" style="background:var(--blue);">
+    <div class="header-row">
+      <div>
+        <div class="h-greet">Good morning 👋</div>
+        <div class="h-name" id="sname">Rahul Kumar</div>
+        <div class="h-meta" id="smeta">2021CSE042 · B.Tech CSE</div>
+      </div>
+      <div class="h-right">
+        <button class="logout-btn" onclick="logout()">Logout</button>
+        <div class="h-avatar">RK</div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn on" onclick="tab('s','h',this)"><svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M9 21V12h6v9"/></svg>Home<span class="tab-ind"></span></button>
+    <button class="tab-btn" onclick="tab('s','r',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h6M3 15h6"/></svg>Room<span class="tab-ind"></span></button>
+    <button class="tab-btn" onclick="tab('s','f',this)"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Fees<span class="tab-ind"></span></button>
+    <button class="tab-btn" onclick="tab('s','i',this)"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Issues<span class="tab-ind"></span></button>
+    <button class="tab-btn" onclick="tab('s','g',this)"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Gate Pass<span class="tab-ind"></span></button>
+  </div>
+  <div class="page-body">
+    <!-- Home -->
+    <div class="section on" id="s-h">
+      <div id="student-notice-list" style="grid-column: 1 / -1;">
+        <div class="demo-hint">Loading notices...</div>
+      </div>
+      <!-- Digital Resident Card -->
+      <div class="card premium-card" style="background: linear-gradient(135deg, var(--blue), #748FFC); border:none; color:#fff; display:flex; flex-direction:column; gap:16px; grid-column: 1 / -1; padding:24px; border-radius:24px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+          <div>
+            <div style="font-size:10px; font-weight:700; opacity:0.8; text-transform:uppercase; letter-spacing:1.5px;">Resident Identity</div>
+            <div style="font-size:24px; font-weight:800; letter-spacing:-0.5px; margin-top:2px;">HOSTILERZ <span style="font-weight:400; opacity:0.6;">· KRMU</span></div>
+          </div>
+          <div class="pill" style="background:rgba(255,255,255,0.2); color:#fff; border:none; backdrop-filter:blur(10px); font-size:11px; padding:4px 12px;" id="card-room">Block A · Room 101</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:18px; margin-top:4px;">
+          <div style="width:64px; height:64px; border-radius:18px; background:rgba(255,255,255,0.15); border:2.5px solid rgba(255,255,255,0.4); display:flex; align-items:center; justify-content:center; font-size:28px;">🎓</div>
+          <div>
+            <div id="card-name" style="font-size:20px; font-weight:800;">Student Name</div>
+            <div id="card-roll" style="font-size:12px; opacity:0.8; font-family:'JetBrains Mono';">ROLL_NUMBER</div>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; border-top:1px solid rgba(255,255,255,0.15); padding-top:18px; margin-top:4px;">
+          <div>
+            <div style="font-size:9px; opacity:0.7; font-weight:600; text-transform:uppercase;">Membership Status</div>
+            <div style="font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px; margin-top:2px;"><span class="pulse-indicator" style="background:#fff; box-shadow:0 0 10px #fff;"></span>Verified Resident</div>
+          </div>
+          <div style="font-family:'JetBrains Mono'; font-size:10px; opacity:0.4;">ID_REF_2025_4821</div>
+        </div>
+      </div>
+
+      <div class="metrics">
+        <div class="metric"><div class="m-val">—</div><div class="m-label">Room number</div></div>
+        <div class="metric"><div class="m-val">0</div><div class="m-label">Gate pass left</div></div>
+      </div>
+      <div class="card"><div class="card-title">Quick status</div>
+        <div class="row"><span class="rl">Room</span><span class="rv">204 · Block B</span></div>
+        <div class="row"><span class="rl">Semester fee</span><span class="pill pg">Paid</span></div>
+        <div class="row"><span class="rl">Active complaint</span><span class="pill pa">1 pending</span></div>
+        <div class="row"><span class="rl">Gate pass</span><span class="pill pb">Valid till 23 Mar</span></div>
+        <div class="row"><span class="rl">Mess plan</span><span class="rv">Full board</span></div>
+        <div class="row"><span class="rl">Wi-Fi</span><span class="pill pg">Active</span></div>
+      </div>
+    </div>
+    <!-- Room -->
+    <div class="section" id="s-r">
+      <div id="student-room-details">
+        <div class="demo-hint">Loading room details...</div>
+      </div>
+    </div>
+    <!-- Fees -->
+    <div class="section" id="s-f">
+      <div id="student-fee-list">
+        <div class="demo-hint">Loading fee data...</div>
+      </div>
+    </div>
+    <!-- Issues -->
+    <div class="section" id="s-i">
+      <div class="card"><div class="card-title">My complaints</div>
+        <div id="student-complaint-list">
+          <div class="demo-hint">Loading complaints...</div>
+        </div>
+      </div>
+      <div class="card" id="student-complaint-history-card" style="display:none; border-top: 3.5px solid var(--muted); opacity: 0.82;">
+        <div class="card-title">📜 Resolved History</div>
+        <div id="student-complaint-history-list"></div>
+      </div>
+      <div class="card"><div class="card-title">Raise new complaint</div>
+        <label class="f-label">Category</label>
+        <select id="sc-cat">
+          <option value="room_cleaning">🧹 Room Cleaning</option>
+          <option value="maintenance">🛠️ Maintenance</option>
+          <option value="electricity">⚡ Electricity</option>
+          <option value="water">💧 Water</option>
+          <option value="food">🍱 Food/Mess</option>
+          <option value="security">🛡️ Security</option>
+          <option value="internet">🌐 Internet</option>
+          <option value="other">💬 Other</option>
+        </select>
+        <label class="f-label">Subject</label><input type="text" id="sc-sub" placeholder="Brief subject"/>
+        <label class="f-label">Description</label><textarea id="sc-desc" placeholder="Describe the issue..."></textarea>
+        <button class="btn btn-primary" id="sc-btn" onclick="submitStudentComplaint()">Submit complaint</button>
+      </div>
+    </div>
+    <!-- Gate Pass -->
+    <div class="section" id="s-g">
+      <div id="student-gp-list">
+         <div class="demo-hint">Loading gate passes...</div>
+      </div>
+      <div class="card"><div class="card-title">Request new gate pass</div>
+        <label class="f-label">Destination</label><input type="text" id="sg-dest" placeholder="City / Place"/>
+        <label class="f-label">Departure</label><input type="datetime-local" id="sg-dep"/>
+        <label class="f-label">Return by</label><input type="datetime-local" id="sg-ret"/>
+        <label class="f-label">Reason</label><input type="text" id="sg-reason" placeholder="e.g. Family function"/>
+        <button class="btn btn-primary" id="sg-btn" onclick="requestGatePass()">Request gate pass</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+<div class="app" id="appA">
+  <div class="app-header" style="background:#166534;">
+    <div class="header-row">
+      <div>
+        <div class="h-greet">Admin Panel</div>
+        <div class="h-name" id="aname">Dr. S. Mehta</div>
+        <div class="h-meta" id="ameta">Hostel Admin · KRMU</div>
+      </div>
+      <div class="h-right">
+        <button class="logout-btn" onclick="logout()">Logout</button>
+        <div class="h-avatar">SM</div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn on" onclick="tab('a','d',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard<span class="tab-ind"></span></button>
+    <button class="tab-btn" onclick="tab('a','r',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h6M3 15h6"/></svg>Rooms<span class="tab-ind"></span></button>
+    <button class="tab-btn" onclick="tab('a','s',this)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Students<span class="tab-ind"></span></button>
+    <button class="tab-btn" onclick="tab('a','f',this)"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Fees<span class="tab-ind"></span></button>
+    <button class="tab-btn" onclick="tab('a','c',this)"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Complaints<span class="tab-ind"></span></button>
+  </div>
+  <div class="page-body">
+    <!-- Dashboard -->
+    <div class="section on" id="a-d">
+      <!-- DASHBOARD CARDS -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:16px; margin-bottom:24px;">
+        <div class="card" style="margin-bottom:0; transition:transform 0.2s; cursor:default;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div style="width:40px; height:40px; border-radius:10px; background:var(--blue-soft); display:flex; align-items:center; justify-content:center; font-size:20px;">🎓</div>
+            <div>
+              <div style="font-size:12px; font-weight:600; color:var(--muted);">Total Students</div>
+              <div id="astat-students" style="font-size:24px; font-weight:800; color:var(--ink);">0</div>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0; transition:transform 0.2s; cursor:default;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div style="width:40px; height:40px; border-radius:10px; background:var(--red-bg); display:flex; align-items:center; justify-content:center; font-size:20px;">💬</div>
+            <div>
+              <div style="font-size:12px; font-weight:600; color:var(--muted);">Active Complaints</div>
+              <div id="astat-complaints" style="font-size:24px; font-weight:800; color:var(--red);">0</div>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0; transition:transform 0.2s; cursor:default;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div style="width:40px; height:40px; border-radius:10px; background:var(--amber-bg); display:flex; align-items:center; justify-content:center; font-size:20px;">📄</div>
+            <div>
+              <div style="font-size:12px; font-weight:600; color:var(--muted);">Pending Gate Pass</div>
+              <div id="astat-gatepasses" style="font-size:24px; font-weight:800; color:var(--amber);">0</div>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0; transition:transform 0.2s; cursor:default;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div style="width:40px; height:40px; border-radius:10px; background:var(--green-bg); display:flex; align-items:center; justify-content:center; font-size:20px;">⚠️</div>
+            <div>
+              <div style="font-size:12px; font-weight:600; color:var(--muted);">Total Fines</div>
+              <div id="astat-fines" style="font-size:24px; font-weight:800; color:var(--green);">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1.5fr 1fr; gap:16px;">
+        <!-- RECENT ACTIVITY -->
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-title" style="display:flex; align-items:center; gap:8px;">
+            📊 Recent Activity <span class="badge" style="background:var(--blue-soft); border-color:var(--blue-mid); color:var(--blue);">Live</span>
+          </div>
+          <div id="admin-activity-timeline" class="activity-timeline" style="margin-top:12px; max-height:400px; overflow-y:auto; padding-right:8px;">
+             <div class="demo-hint">Loading system activity...</div>
+          </div>
+        </div>
+
+        <!-- ROOM OVERVIEW -->
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-title">🏠 Room Overview</div>
+          <div id="admin-room-stats" style="margin-top:16px;">
+            <div style="margin-bottom:20px;">
+              <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:13px; font-weight:600;">
+                <span style="color:var(--ink2);">Total Occupancy</span>
+                <span id="astat-occupancy-percent" style="color:var(--blue);">0%</span>
+              </div>
+              <div class="progress-bg" style="height:12px; border-radius:6px; background:var(--bg); border:1px solid var(--border);">
+                <div id="astat-occupancy-bar" class="progress-fill" style="width: 0%; height:100%; border-radius:6px; background:linear-gradient(90deg, var(--blue), #748FFC);"></div>
+              </div>
+            </div>
+            
+            <div id="admin-block-dist" style="display:flex; flex-direction:column; gap:12px;">
+              <div class="demo-hint">Calculating occupancy...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Rooms Management -->
+    <div class="section" id="a-r">
+      <!-- ── BLOCK A SECTION (BOYS) ── -->
+      <div style="margin-bottom:40px; border-top: 5px solid var(--blue); padding-top:20px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:15px;">
+           <span style="font-size:24px;">👦</span>
+           <h2 style="margin:0; font-size:20px; font-weight:800; color:var(--blue);">Block A Management (Boys)</h2>
+        </div>
+        
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap:20px; align-items:start;">
+          <div class="card" style="height:fit-content; border:1px solid var(--blue-soft);">
+            <div class="card-title">Room Map — Block A</div>
+            <div style="display:flex;gap:10px;margin-bottom:11px;flex-wrap:wrap;">
+              <span style="display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:var(--muted);"><span class="rc-occ" style="width:11px;height:11px;border-radius:3px;display:inline-block;"></span>Occupied</span>
+              <span style="display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:var(--muted);"><span class="rc-vac" style="width:11px;height:11px;border-radius:3px;display:inline-block;"></span>Vacant</span>
+              <span style="display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:var(--muted);"><span class="rc-mnt" style="width:11px;height:11px;border-radius:3px;display:inline-block;"></span>Maintenance</span>
+            </div>
+            <div class="room-grid" id="admin-room-grid-a">
+               <div class="demo-hint" style="grid-column: span 4;">Loading rooms...</div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:20px;">
+            <div class="card glass-card" style="height:fit-content; background:var(--white);">
+              <div class="card-title">🆕 Add Room (Block A)</div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="field"><label>ROOM NO</label><input type="text" id="ar-num-a" placeholder="e.g. A101"/></div>
+                <div class="field"><label>CAPACITY</label><input type="number" id="ar-cap-a" value="2"/></div>
+                <div class="field"><label>TYPE</label>
+                  <select id="ar-type-a">
+                    <option value="single">Single</option>
+                    <option value="double" selected>Double</option>
+                    <option value="triple">Triple</option>
+                  </select>
+                </div>
+              </div>
+              <button class="btn btn-primary" id="ar-btn-a" onclick="submitAdminRoom('A')" style="margin-top:12px; background:var(--blue); border-radius:14px;">Create Room in A</button>
+            </div>
+
+            <div class="card glass-card" style="height:fit-content; background:var(--white);">
+              <div class="card-title">🔑 Allot Room (Block A)</div>
+              <div class="field"><label>STUDENT ROLL NO</label><input type="text" id="assign-roll-a" placeholder="e.g. 2024CSE001"/></div>
+              <div class="field"><label>SELECT ROOM</label>
+                <select id="assign-room-id-a"><option value="">Loading A rooms...</option></select>
+              </div>
+              <button class="btn btn-primary" id="assign-btn-a" onclick="submitAssignRoom('A')" style="margin-top:12px; background:var(--blue);">Assign Room in A</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── BLOCK B SECTION (GIRLS) ── -->
+      <div style="border-top: 5px solid var(--teal); padding-top:20px;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:15px;">
+           <span style="font-size:24px;">👧</span>
+           <h2 style="margin:0; font-size:20px; font-weight:800; color:var(--teal);">Block B Management (Girls)</h2>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap:20px; align-items:start;">
+          <div class="card" style="height:fit-content; border:1px solid var(--teal-soft);">
+            <div class="card-title">Room Map — Block B</div>
+            <div style="display:flex;gap:10px;margin-bottom:11px;flex-wrap:wrap;">
+              <span style="display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:var(--muted);"><span class="rc-occ" style="width:11px;height:11px;border-radius:3px;display:inline-block;"></span>Occupied</span>
+              <span style="display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:var(--muted);"><span class="rc-vac" style="width:11px;height:11px;border-radius:3px;display:inline-block;"></span>Vacant</span>
+              <span style="display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:var(--muted);"><span class="rc-mnt" style="width:11px;height:11px;border-radius:3px;display:inline-block;"></span>Maintenance</span>
+            </div>
+            <div class="room-grid" id="admin-room-grid-b">
+               <div class="demo-hint" style="grid-column: span 4;">Loading rooms...</div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:20px;">
+            <div class="card glass-card" style="height:fit-content; background:var(--white);">
+              <div class="card-title">🆕 Add Room (Block B)</div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="field"><label>ROOM NO</label><input type="text" id="ar-num-b" placeholder="e.g. B101"/></div>
+                <div class="field"><label>CAPACITY</label><input type="number" id="ar-cap-b" value="2"/></div>
+                <div class="field"><label>TYPE</label>
+                  <select id="ar-type-b">
+                    <option value="single">Single</option>
+                    <option value="double" selected>Double</option>
+                    <option value="triple">Triple</option>
+                  </select>
+                </div>
+              </div>
+              <button class="btn btn-primary" id="ar-btn-b" onclick="submitAdminRoom('B')" style="margin-top:12px; background:var(--teal); border-radius:14px;">Create Room in B</button>
+            </div>
+
+            <div class="card glass-card" style="height:fit-content; background:var(--white);">
+              <div class="card-title">🔑 Allot Room (Block B)</div>
+              <div class="field"><label>STUDENT ROLL NO</label><input type="text" id="assign-roll-b" placeholder="e.g. 2024CSE001"/></div>
+              <div class="field"><label>SELECT ROOM</label>
+                <select id="assign-room-id-b"><option value="">Loading B rooms...</option></select>
+              </div>
+              <button class="btn btn-primary" id="assign-btn-b" onclick="submitAssignRoom('B')" style="margin-top:12px; background:var(--teal);">Assign Room in B</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Students -->
+    <div class="section" id="a-s">
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div style="padding:12px 14px 0;"><div class="card-title" style="margin-bottom:9px;">All students</div></div>
+        <div style="overflow-x:auto;">
+          <table class="tbl">
+            <thead><tr><th>Name</th><th>Roll</th><th>Room</th><th>Fee</th></tr></thead>
+            <tbody id="admin-student-list">
+              <tr><td colspan="4"><div class="demo-hint">Loading students...</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card"><div class="card-title">Add new student</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="field"><label>FULL NAME</label><input type="text" id="as-name" placeholder="Student name"/></div>
+          <div class="field"><label>ROLL NO</label><input type="text" id="as-roll" placeholder="e.g. 2024CSE001"/></div>
+          <div class="field"><label>COURSE</label><input type="text" id="as-course" placeholder="e.g. B.Tech"/></div>
+          <div class="field"><label>CONTACT</label><input type="text" id="as-contact" placeholder="+91 XXXX..."/></div>
+          <div class="field" style="grid-column: span 2;"><label>GENDER</label>
+            <select id="as-gender">
+              <option value="male">👦 Boy (Assign to Block A)</option>
+              <option value="female">👧 Girl (Assign to Block B)</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="as-btn" onclick="submitAdminStudent()" style="margin-top:12px;">Add Student</button>
+      </div>
+    </div>
+    <!-- Fees -->
+    <div class="section" id="a-f">
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap:20px; align-items:start; width: 100%;">
+
+      <div class="card" style="height:fit-content;"><div class="card-title">Fee collection</div>
+        <div id="admin-fee-list">
+          <div class="demo-hint">Loading fees...</div>
+        </div>
+      </div>
+      
+      <div style="display:flex; flex-direction:column; gap:20px;">
+        <div class="card glass-card premium-card" style="height:fit-content; border:1px solid var(--blue-bd); border-top: 4px solid var(--blue);"><div class="card-title" style="color:var(--blue);">Send fee reminder</div>
+          <label class="f-label">Student Roll Number</label>
+          <input type="text" id="af-feeid" placeholder="e.g. 2021CSE2007" style="background:var(--white);"/>
+          <button class="btn btn-primary" id="af-btn" onclick="submitAdminFeeReminder()">Send reminder</button>
+          <div class="demo-hint" style="text-align:left; margin-top:12px;">Tips: Sends instant notification and app alert to the student.</div>
+        </div>
+
+        <div class="card glass-card" style="height:fit-content; background:var(--white);"><div class="card-title">Collection Pulse</div>
+          <div class="row"><span class="rl">Total Pending</span><span class="rv" id="astat-total-pending">₹0</span></div>
+          <div class="row"><span class="rl">Monthly Goal</span><span class="rv">₹1,50,000</span></div>
+          <div style="padding-top:10px;">
+             <div style="height:8px; background:var(--bg); border-radius:4px; overflow:hidden;">
+               <div style="width:78%; height:100%; background:var(--blue); border-radius:4px;"></div>
+             </div>
+             <div style="font-size:10px; color:var(--muted); margin-top:6px; font-weight:600;">78% of monthly target achieved</div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <!-- Notices -->
+    <div class="section" id="a-c">
+      <div class="card"><div class="card-title">All complaints</div>
+        <div id="admin-complaint-list">
+          <div class="demo-hint">Loading complaints...</div>
+        </div>
+      </div>
+      <div class="card" id="admin-complaint-history-card" style="display:none; border-top: 3.5px solid var(--muted); opacity: 0.82;">
+        <div class="card-title">📜 Resolved History</div>
+        <div id="admin-complaint-history-list"></div>
+      </div>
+      <div class="card"><div class="card-title">Post notice</div>
+        <label class="f-label">Title</label><input type="text" id="ac-noticetitle" placeholder="e.g. Mess menu updated"/>
+        <label class="f-label">Message</label><textarea id="ac-noticemsg" placeholder="Notice content..."></textarea>
+        <label class="f-label">Duration</label>
+        <select id="ac-noticeduration">
+           <option value="24">24 Hours</option>
+           <option value="168">7 Days</option>
+        </select>
+        <button class="btn btn-primary" id="ac-noticebtn" onclick="submitAdminNotice()">Publish notice</button>
+      </div>
+      <div class="card"><div class="card-title">Active Notices</div>
+        <div id="admin-notice-list">
+          <div class="demo-hint">Loading active notices...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WARDEN APP -->
+<div class="app" id="appW">
+  <div class="app-header" style="background: linear-gradient(135deg, #92400E, #B45309, #D97706); box-shadow: 0 4px 20px rgba(180, 83, 9, 0.3);">
+    <div class="header-row">
+      <div>
+        <div class="h-greet">Warden Panel</div>
+        <div class="h-name" id="wname">Warden</div>
+        <div class="h-meta" id="wmeta">Block B · KRMU</div>
+      </div>
+      <div class="h-right">
+        <button class="logout-btn" onclick="logout()">Logout</button>
+        <div class="h-avatar">RV</div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn on" onclick="tab('w','o',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Overview<span class="tab-ind"></span></button>
+    <button class="tab-btn" onclick="tab('w','map',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h6M3 15h6"/></svg>Block Map<span class="tab-ind"></span></button>
+    <button class="tab-btn" onclick="tab('w','comp',this)"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Complaints<span class="tab-ind"></span></button>
+    <button class="tab-btn" onclick="tab('w','st',this)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Students<span class="tab-ind"></span></button>
+    <button class="tab-btn" onclick="tab('w','g',this)"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Gate Passes<span class="tab-ind"></span></button>
+    <button class="tab-btn" onclick="tab('w','fn',this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Fines<span class="tab-ind"></span></button>
+    <button class="tab-btn" onclick="tab('w','n',this)"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>Notices<span class="tab-ind"></span></button>
+  </div>
+  <div class="page-body">
+    <!-- Overview -->
+    <div class="section on" id="w-o">
+      <div class="metrics" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
+        <div class="metric premium-card" style="border-bottom: 4px solid var(--blue); position:relative;">
+          <div style="position:absolute; top:12px; right:14px; font-size:20px; opacity:0.15;">👥</div>
+          <div class="m-val" style="color:var(--blue);">0</div>
+          <div class="m-label">Total students</div>
+        </div>
+        <div class="metric premium-card" style="border-bottom: 4px solid var(--teal); position:relative;">
+          <div style="position:absolute; top:12px; right:14px; font-size:20px; opacity:0.15;">📍</div>
+          <div class="m-val" style="color:var(--teal);">5</div>
+          <div class="m-label">On gate pass</div>
+        </div>
+        <div class="metric premium-card" style="border-bottom: 4px solid var(--amber); position:relative;">
+          <div style="position:absolute; top:12px; right:14px; font-size:20px; opacity:0.15;">📑</div>
+          <div class="m-val" style="color:var(--amber);">0</div>
+          <div class="m-label">Pending Approvals</div>
+        </div>
+        <div class="metric premium-card" style="border-bottom: 4px solid var(--red); position:relative;">
+          <div style="position:absolute; top:12px; right:14px; font-size:20px; opacity:0.15;">⚠️</div>
+          <div class="m-val" style="color:var(--red);">0</div>
+          <div class="m-label">Open Complaints</div>
+        </div>
+      </div>
+      
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap:20px; margin-top:10px;">
+        <div class="card glass-card premium-card" style="height:fit-content; background: linear-gradient(135deg, white, var(--blue-soft));"><div class="card-title">Live Hostel Pulse</div>
+          <div style="display:flex; flex-direction:column; gap:12px; margin-top:5px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; font-weight:600; color:var(--muted);"><span class="pulse-indicator"></span>Block Activity</span>
+              <span class="pill pg">Normal</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; font-weight:600; color:var(--muted);"><span class="pulse-indicator" style="background:var(--amber); box-shadow:0 0 8px var(--amber);"></span>Cleaning Active</span>
+              <span class="pill pa">2 Rooms</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; font-weight:600; color:var(--muted);"><span class="pulse-indicator" style="background:var(--blue); box-shadow:0 0 8px var(--blue);"></span>Gate Activity</span>
+              <span class="pill pb">High</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="height:fit-content;"><div class="card-title">Today's snapshot</div>
+          <div class="row"><span class="rl">Curfew time</span><span class="rv">10:30 PM</span></div>
+          <div class="row"><span class="rl">Active gate passes</span><span class="rv">5</span></div>
+          <div class="row"><span class="rl">Pending approvals</span><span class="pill pa">2 waiting</span></div>
+          <div class="row"><span class="rl">Visitors inside</span><span class="rv">2</span></div>
+          <div class="row"><span class="rl">Urgent complaints</span><span class="pill pr">1 urgent</span></div>
+        </div>
+
+        <div class="card" style="height:fit-content; background:var(--white); border-color:var(--border2);"><div class="card-title">Quick Actions</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="premium-card" style="padding:14px; background:var(--blue-soft); border:1px solid var(--blue-mid); border-radius:14px; cursor:pointer;" onclick="tab('w','g', document.querySelectorAll('.app#appW .tab-btn')[2]); scrollToCard('#wv-roll')">
+              <div style="font-size:20px; margin-bottom:4px;">🛡️</div>
+              <div style="font-size:11px; font-weight:800; color:var(--blue);">Verify Pass</div>
+            </div>
+            <div class="premium-card" style="padding:14px; background:var(--red-bg); border:1px solid var(--red-bd); border-radius:14px; cursor:pointer;" onclick="tab('w','fn', document.querySelectorAll('.app#appW .tab-btn')[3]); scrollToCard('#wf-roll')">
+              <div style="font-size:20px; margin-bottom:4px;">⚖️</div>
+              <div style="font-size:11px; font-weight:800; color:var(--red);">Issue Fine</div>
+            </div>
+            <div class="premium-card" style="padding:14px; background:var(--amber-bg); border:1px solid var(--amber-bd); border-radius:14px; cursor:pointer;" onclick="tab('w','n', document.querySelectorAll('.app#appW .tab-btn')[4]); scrollToCard('#wn-title')">
+              <div style="font-size:20px; margin-bottom:4px;">📢</div>
+              <div style="font-size:11px; font-weight:800; color:var(--amber);">Post Notice</div>
+            </div>
+            <div class="premium-card" style="padding:14px; background:var(--teal-bg); border:1px solid var(--teal-bd); border-radius:14px; cursor:pointer;" onclick="tab('w','map', document.querySelectorAll('.app#appW .tab-btn')[1])">
+              <div style="font-size:20px; margin-bottom:4px;">🗺️</div>
+              <div style="font-size:11px; font-weight:800; color:var(--teal);">Block Map</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="grid-column: 1 / -1;"><div class="card-title">Pending gate pass approvals</div>
+          <div id="w-pending-gp">
+            <div class="demo-hint">Loading requests...</div>
+          </div>
+        </div>
+
+        <div class="card" style="grid-column: 1 / -1;"><div class="card-title">Recent Activity Log</div>
+          <div id="w-activity-list">
+            <div class="demo-hint">No recent activity detected.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="section" id="w-map">
+        <div class="card"><div class="card-title">Block Map — Room Occupancy</div>
+          <div style="display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap;">
+            <span style="display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:var(--muted);"><span style="width:11px;height:11px;border-radius:3px;background:var(--blue-soft);border:1.5px solid var(--blue-mid);display:inline-block;"></span>Occupied</span>
+            <span style="display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:var(--muted);"><span style="width:11px;height:11px;border-radius:3px;background:var(--green-bg);border:1.5px solid var(--green-bd);display:inline-block;"></span>Vacant</span>
+            <span style="display:flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;color:var(--muted);"><span style="width:11px;height:11px;border-radius:3px;background:var(--amber-bg);border:1.5px solid var(--amber-bd);display:inline-block;"></span>Maintenance</span>
+          </div>
+          <div class="room-grid" id="warden-room-grid">
+             <div class="demo-hint" style="grid-column: span 4;">Hold on, loading map...</div>
+          </div>
+        </div>
+      </div>
+      <!-- Complaints Dashboard -->
+    <!-- Complaints Dashboard -->
+    <div class="section" id="w-comp">
+      <div class="card"><div class="card-title">🧹 Cleaning Requests</div>
+        <div id="w-cleaning-list">
+          <div class="demo-hint">Loading room cleaning requests...</div>
+        </div>
+      </div>
+      <div class="card"><div class="card-title">📌 General Complaints</div>
+        <div id="w-general-complaint-list">
+          <div class="demo-hint">Loading general complaints...</div>
+        </div>
+      </div>
+
+      <!-- Resolved History Card -->
+      <div class="card" id="w-complaint-history-card" style="display:none; grid-column: 1 / -1; border-top: 3.5px solid var(--muted); opacity: 0.82;">
+        <div class="card-title">📜 Resolved History</div>
+        <div id="w-complaint-history-list"></div>
+      </div>
+    </div>
+    <!-- Students View -->
+    <div class="section" id="w-st">
+      <div class="card" style="padding:0; overflow:hidden;">
+        <div class="card-title" style="padding:16px 16px 0;">Block Students</div>
+        <div style="overflow-x:auto;">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Roll No</th>
+                <th>Room</th>
+                <th>Contact</th>
+              </tr>
+            </thead>
+            <tbody id="w-student-list">
+              <tr><td colspan="4"><div class="demo-hint">Loading student directory...</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- Visitors -->
+    <div class="section" id="w-v">
+      <div class="card"><div class="card-title">Current visitors</div>
+        <div id="w-visitor-list">
+           <div class="demo-hint">Loading visitors...</div>
+        </div>
+      </div>
+      <div class="card"><div class="card-title">Register visitor</div>
+        <label class="f-label">Visitor name</label><input type="text" placeholder="Full name"/>
+        <label class="f-label">Visiting student (room)</label><input type="text" placeholder="e.g. Rahul Kumar — Room 204"/>
+        <label class="f-label">Phone</label><input type="text" placeholder="+91 XXXXX XXXXX"/>
+        <label class="f-label">Purpose</label><input type="text" placeholder="e.g. Family visit"/>
+        <label class="f-label">ID proof</label><select><option>Aadhaar card</option><option>PAN card</option><option>Driving licence</option><option>Passport</option></select>
+        <button class="btn btn-primary" onclick="fb(this,'Registering...','Visitor registered!',1)">Register visitor</button>
+      </div>
+      <div class="card"><div class="card-title">Visitor log today</div>
+        <div id="w-visitor-log">
+          <div class="demo-hint">Loading visitor log...</div>
+        </div>
+      </div>
+    </div>
+    <!-- Gate Passes -->
+    <div class="section" id="w-g">
+      <div class="card">
+        <div class="card-title">All passes</div>
+        <div id="w-all-gp">
+          <div class="demo-hint">Loading requests...</div>
+        </div>
+      </div>
+      <div class="card"><div class="card-title">Verify student gate pass</div>
+        <label class="f-label">Student Roll Number</label><input type="text" id="wv-roll" placeholder="e.g. 2021CSE042"/>
+        <button class="btn btn-primary" onclick="fb(this,'Searching...','Verified!',1)">Verify and Check-out</button>
+      </div>
+    </div>
+    <!-- Fines -->
+    <div class="section" id="w-fn">
+      <div class="card">
+        <div class="card-title">Issue new fine</div>
+        <label class="f-label">Student Roll Number</label>
+        <input type="text" id="wf-roll" placeholder="e.g. 2021CSE042"/>
+        <label class="f-label">Fine Amount (₹)</label>
+        <input type="number" id="wf-amount" placeholder="e.g. 500" min="1"/>
+        <label class="f-label">Reason</label>
+        <textarea id="wf-reason" placeholder="e.g. Late return from gate pass..."></textarea>
+        <button class="btn btn-primary" id="wf-btn" onclick="submitWardenFine()">Issue Fine</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Fines in your block</div>
+        <div id="w-fine-list">
+          <div class="demo-hint">Loading fines...</div>
+        </div>
+      </div>
+    </div>
+    <!-- Notices -->
+    <div class="section" id="w-n">
+      <div class="card">
+        <div class="card-title">Broadcast Notice</div>
+        <p class="demo-hint" style="margin-top:-8px; margin-bottom:12px;">Notice will be sent to ALL students in your block.</p>
+        <label class="f-label">Title</label>
+        <input type="text" id="wn-title" placeholder="e.g. Curfew time updated"/>
+        <label class="f-label">Description</label>
+        <textarea id="wn-msg" placeholder="Notice details..."></textarea>
+        <label class="f-label">Duration</label>
+        <select id="wn-duration">
+          <option value="24">24 Hours</option>
+          <option value="168">7 Days</option>
+        </select>
+        <button class="btn btn-primary" id="wn-btn" onclick="submitWardenNotice()">Post Notice</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Active notices</div>
+        <div id="w-notice-list">
+          <div class="demo-hint">Loading notices...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <footer>
+    <div class="team">Developed by Team Tech-Pirate</div>
+</footer> -->
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script src="/hostilerz-socket-client.js"></script>
+<script>
+let role = '';
+
+const pillStyles = {
+  student: 'background:var(--blue-soft);color:var(--blue);border:1px solid var(--blue-mid);',
+  admin: 'background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd);',
+  warden: 'background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd);'
+};
+
+function showLogin(r) {
+  role = r;
+  document.getElementById('land').style.display = 'none';
+  const l = document.getElementById('login');
+  l.style.display = 'flex';
+  l.classList.add('show');
+  document.getElementById('sf').style.display = r === 'student' ? 'block' : 'none';
+  document.getElementById('af').style.display = r === 'admin' ? 'block' : 'none';
+  document.getElementById('wf').style.display = r === 'warden' ? 'block' : 'none';
+  const labels = { student: '🎓 Student', admin: '🏛️ Admin', warden: '🔑 Warden' };
+  const titles = { student: 'Welcome back', admin: 'Admin portal', warden: 'Warden portal' };
+  const subs = { student: 'Sign in with your roll number and password', admin: 'Sign in with your admin credentials', warden: 'Sign in with your warden ID and block' };
+  const p = document.getElementById('rpill');
+  p.textContent = labels[r];
+  p.style.cssText = pillStyles[r];
+  document.getElementById('ltitle').textContent = titles[r];
+  document.getElementById('lsub').textContent = subs[r];
+  document.getElementById('lerr').style.display = 'none';
+}
+
+function showLand() {
+  document.getElementById('login').style.display = 'none';
+  document.getElementById('login').classList.remove('show');
+  document.getElementById('land').style.display = 'flex';
+}
+
+const SERVER_URL = "http://localhost:5000";
+
+async function loadPublicStats() {
+  try {
+    const res = await fetch(SERVER_URL + '/api/public-stats');
+    const data = await res.json();
+    if (data.success) {
+      if (document.getElementById('stat-rooms')) document.getElementById('stat-rooms').textContent = data.data.rooms;
+      if (document.getElementById('stat-students')) document.getElementById('stat-students').textContent = data.data.students;
+      if (document.getElementById('stat-blocks')) document.getElementById('stat-blocks').textContent = data.data.blocks;
+    }
+  } catch(e) { console.warn("Could not load public stats"); }
+}
+
+const fetchApi = async (url, options = {}) => {
+  const token = localStorage.getItem('token');
+  const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  try {
+    const response = await fetch(SERVER_URL + url, { ...options, headers });
+    return await response.json();
+  } catch (err) {
+    console.error("fetchApi Error:", err);
+    if (typeof showToast === 'function') showToast("Network error. Please try again.", "error");
+    return { success: false, message: "Network error. Server might be offline." };
+  }
+};
+
+async function fetchDashboardData(r) {
+  try {
+    if (r === 'student') {
+      const res = await fetchApi('/api/student/dashboard');
+      if (res.success && res.data) {
+        const { student, room, fee_status, stats } = res.data;
+        document.getElementById('sname').textContent = student.name || 'Student';
+        document.getElementById('smeta').textContent = (student.roll_no || '') + ' · ' + (student.course || '');
+        
+        const hm = document.getElementById('s-h');
+        const vals = hm.querySelectorAll('.m-val');
+        if (vals.length >= 2) {
+          vals[0].textContent = room ? room.room_number : '—';
+          vals[1].textContent = stats ? (stats.pending_gate_passes || 0) : '0';
+        }
+        
+        const rowRvs = hm.querySelectorAll('.row span.rv');
+        if (rowRvs.length >= 1) {
+          rowRvs[0].textContent = room ? `${room.room_number} · Block ${room.block}` : 'Unassigned';
+        }
+        const rowPills = hm.querySelectorAll('.row span.pill');
+        if (rowPills.length >= 2) {
+           rowPills[0].textContent = fee_status ? fee_status.status.toUpperCase() : 'UNKNOWN';
+           rowPills[0].className = 'pill ' + (fee_status && fee_status.status === 'paid' ? 'pg' : 'pr');
+           
+           rowPills[1].textContent = `${stats ? stats.open_complaints : 0} pending`;
+           rowPills[1].className = 'pill ' + ((stats && stats.open_complaints > 0) ? 'pa' : 'pg');
+        }
+         
+         // Update Digital Card Data
+         if (document.getElementById('card-name')) document.getElementById('card-name').textContent = student.name || 'Resident';
+         if (document.getElementById('card-roll')) document.getElementById('card-roll').textContent = student.roll_no || 'N/A';
+         if (document.getElementById('card-room')) document.getElementById('card-room').textContent = room ? `Block ${room.block} · Room ${room.room_number}` : 'Unassigned';
+      }
+    } else if (r === 'admin') {
+      const res = await fetchApi('/api/admin/dashboard');
+      if (res.success && res.data) {
+        const { stats, room_overview } = res.data;
+        
+        // Update Grid Cards
+        if (document.getElementById('astat-students')) document.getElementById('astat-students').textContent = stats.total_students || '0';
+        if (document.getElementById('astat-complaints')) document.getElementById('astat-complaints').textContent = stats.pending_complaints || '0';
+        if (document.getElementById('astat-gatepasses')) document.getElementById('astat-gatepasses').textContent = stats.pending_gate_passes || '0';
+        if (document.getElementById('astat-fines')) document.getElementById('astat-fines').textContent = stats.total_fines || '0';
+
+        // Update Room Overview
+        if (room_overview) {
+          const occPercent = room_overview.total_rooms > 0 ? Math.round((room_overview.occupied_rooms / room_overview.total_rooms) * 100) : 0;
+          if (document.getElementById('astat-occupancy-percent')) document.getElementById('astat-occupancy-percent').textContent = occPercent + '%';
+          if (document.getElementById('astat-occupancy-bar')) document.getElementById('astat-occupancy-bar').style.width = occPercent + '%';
+          
+          const blockDist = document.getElementById('admin-block-dist');
+          if (blockDist && room_overview.blocks) {
+            blockDist.innerHTML = room_overview.blocks.map(b => {
+               const bPerc = b.total > 0 ? Math.round((b.occupied / b.total) * 100) : 0;
+               return `
+                <div>
+                  <div style="display:flex; justify-content:space-between; margin-bottom:4px; font-size:11px; font-weight:600; color:var(--muted);">
+                    <span>${b.name === 'Block A' ? 'Block A (Boys)' : b.name === 'Block B' ? 'Block B (Girls)' : b.name} (${b.occupied}/${b.total} beds)</span>
+                    <span>${bPerc}%</span>
+                  </div>
+                  <div style="height:6px; background:var(--bg); border-radius:3px; overflow:hidden;">
+                    <div style="width:${bPerc}%; height:100%; background:var(--ink2); border-radius:3px;"></div>
+                  </div>
+                </div>`;
+            }).join('');
+          }
+        }
+        
+        loadAdminActivity();
+        loadAvailableRooms();
+      }
+    } else if (r === 'warden') {
+      const res = await fetchApi('/api/warden/overview');
+      if (res.success && res.data && res.data.stats) {
+         const { stats } = res.data;
+         const hm = document.getElementById('w-o');
+         const vals = hm.querySelectorAll('.m-val');
+         if (vals.length >= 4) {
+           vals[0].textContent = stats.total_students || '0';
+           vals[1].textContent = stats.on_gate_pass || '0';
+           vals[2].textContent = stats.pending_gate_passes || '0';
+           vals[3].textContent = stats.active_complaints || '0';
+         }
+         loadWardenActivity();
+      }
+    }
+  } catch(e) {
+    console.error("Dashboard fetch failed:", e);
+  }
+}
+
+function getStatusPill(status) {
+  if (status === 'resolved') return '<span class="pill pg">Resolved</span>';
+  if (status === 'in_progress') return '<span class="pill pb">In progress</span>';
+  return '<span class="pill pa">Pending</span>';
+}
+
+function formatDate(ds) {
+  if (!ds) return '';
+  const d = new Date(ds);
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) + ' · ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+async function loadStudentComplaints() {
+  const list = document.getElementById('student-complaint-list');
+  const hCard = document.getElementById('student-complaint-history-card');
+  const hList = document.getElementById('student-complaint-history-list');
+  if (!list) return;
+  try {
+    const res = await fetchApi('/api/student/complaints');
+    if (res.success && res.data) {
+      if (res.data.length === 0) {
+        list.innerHTML = '<div class="demo-hint">No complaints found.</div>';
+        if (hCard) hCard.style.display = 'none';
+        return;
+      }
+
+      const now = new Date();
+      const twentyFourHoursAgo = now.getTime() - (24 * 60 * 60 * 1000);
+      
+      const main = [];
+      const history = [];
+
+      res.data.forEach(c => {
+        const isResolved = c.status === 'resolved' || c.status === 'rejected';
+        const resAt = c.resolved_at || c.updatedAt;
+        const isOld = isResolved && resAt && new Date(resAt).getTime() < twentyFourHoursAgo;
+        
+        if (isOld) history.push(c);
+        else main.push(c);
+      });
+
+      const render = (items) => items.map(c => `
+        <div class="list-item">
+          <div class="li-row">
+            <div>
+              <div class="li-title">${c.subject}</div>
+              <div class="li-meta">${formatDate(c.created_at || c.createdAt)} · ${c.category}</div>
+            </div>
+            ${getStatusPill(c.status)}
+          </div>
+        </div>
+      `).join('');
+
+      list.innerHTML = main.length > 0 ? render(main) : '<div class="demo-hint">No active complaints.</div>';
+      
+      if (hCard && hList) {
+        if (history.length > 0) {
+          hCard.style.display = 'block';
+          hList.innerHTML = render(history);
+        } else {
+          hCard.style.display = 'none';
+        }
+      }
+    }
+  } catch(e) {
+     list.innerHTML = '<div class="demo-hint">Failed to load complaints.</div>';
+  }
+}
+
+let currentStudentRoom = '';
+
+async function submitHousekeepingComplaint(btn) {
+  const roomInfo = currentStudentRoom || 'Room info unavailable';
+  fb(btn, 'Sending Request...', 'Request Sent!', true);
+  try {
+    const res = await fetchApi('/api/student/complaint', {
+      method: 'POST',
+      body: JSON.stringify({ 
+        category: 'Housekeeping', 
+        subject: `Housekeeping: ${roomInfo}`, 
+        description: `Direct housekeeping request for ${roomInfo} by student dashboard.` 
+      })
+    });
+    if (res.success) {
+      showToast('Housekeeping request sent!', 'success');
+      loadStudentComplaints();
+      fetchDashboardData('student');
+    } else {
+      showToast(res.message, 'error');
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function submitStudentComplaint() {
+  const cat = document.getElementById('sc-cat').value;
+  const sub = document.getElementById('sc-sub').value.trim();
+  const desc = document.getElementById('sc-desc').value.trim();
+  const btn = document.getElementById('sc-btn');
+
+  if (!cat || !sub || !desc) {
+    showToast('Please fill all fields.', 'error');
+    return;
+  }
+  
+  fb(btn, 'Submitting...', 'Complaint submitted!', true);
+  
+  try {
+    const res = await fetchApi('/api/student/complaint', {
+      method: 'POST',
+      body: JSON.stringify({ category: cat, subject: sub, description: desc })
+    });
+    if (res.success) {
+      document.getElementById('sc-sub').value = '';
+      document.getElementById('sc-desc').value = '';
+      document.getElementById('sc-cat').value = '';
+      loadStudentComplaints();
+      fetchDashboardData('student');
+      showToast('Complaint submitted successfully!', 'success');
+    } else {
+      showToast(res.message, 'error');
+    }
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+async function loadAdminComplaints() {
+  const list = document.getElementById('admin-complaint-list');
+  const hCard = document.getElementById('admin-complaint-history-card');
+  const hList = document.getElementById('admin-complaint-history-list');
+  if (!list) return;
+  try {
+    const res = await fetchApi('/api/admin/complaints');
+    if (res.success && res.data) {
+      if (res.data.length === 0) {
+        list.innerHTML = '<div class="demo-hint">No complaints.</div>';
+        if (hCard) hCard.style.display = 'none';
+        return;
+      }
+
+      const now = new Date();
+      const twentyFourHoursAgo = now.getTime() - (24 * 60 * 60 * 1000);
+      
+      const main = [];
+      const history = [];
+
+      res.data.forEach(c => {
+        const isResolved = c.status === 'resolved' || c.status === 'rejected';
+        const resAt = c.resolved_at || c.updatedAt;
+        const isOld = isResolved && resAt && new Date(resAt).getTime() < twentyFourHoursAgo;
+        
+        if (isOld) history.push(c);
+        else main.push(c);
+      });
+
+      const render = (items) => items.map(c => {
+        let actionBtn = '';
+        if (c.status === 'pending') {
+          actionBtn = `<button class="btn btn-sm" style="margin-top:7px;background:var(--blue);color:#fff;border:none;padding:4px 10px;border-radius:12px;font-size:10px;cursor:pointer;" onclick="updateAdminComplaint(${c.id}, 'in_progress')">Mark In-Progress</button>`;
+        } else if (c.status === 'in_progress') {
+          actionBtn = `<button class="btn btn-sm" style="margin-top:7px;background:var(--green);color:#fff;border:none;padding:4px 10px;border-radius:12px;font-size:10px;cursor:pointer;" onclick="updateAdminComplaint(${c.id}, 'resolved')">Resolve</button>`;
+        }
+        const studentObj = c.student || {};
+        const roomObj = studentObj.room || {};
+        const roomTxt = roomObj.room_number ? `${roomObj.block}-${roomObj.room_number}` : 'No Room';
+        
+        return `
+        <div class="list-item">
+          <div class="li-row">
+            <div>
+              <div class="li-title">${c.subject} — ${roomTxt}</div>
+              <div class="li-meta">${formatDate(c.created_at || c.createdAt)} · ${studentObj.name} · ${c.category}</div>
+            </div>
+            ${getStatusPill(c.status)}
+          </div>
+          ${actionBtn}
+        </div>
+        `;
+      }).join('');
+
+      list.innerHTML = main.length > 0 ? render(main) : '<div class="demo-hint">No active complaints.</div>';
+      
+      if (hCard && hList) {
+        if (history.length > 0) {
+          hCard.style.display = 'block';
+          hList.innerHTML = render(history);
+        } else {
+          hCard.style.display = 'none';
+        }
+      }
+    }
+  } catch(e) {
+     list.innerHTML = '<div class="demo-hint">Failed to load complaints.</div>';
+  }
+}
+
+async function updateAdminComplaint(id, status) {
+  try {
+    const res = await fetchApi(`/api/admin/complaint/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ status })
+    });
+    if (res.success) {
+      loadAdminComplaints();
+      loadAdminActivity();
+      fetchDashboardData('admin');
+    }
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+async function loadAdminActivity() {
+  const timeline = document.getElementById('admin-activity-timeline');
+  if (!timeline) return;
+  try {
+    const res = await fetchApi('/api/admin/activity');
+    if (res.success && res.data) {
+      if (res.data.length === 0) {
+        timeline.innerHTML = '<div class="demo-hint">No activity recorded today.</div>';
+        return;
+      }
+      timeline.innerHTML = res.data.map(at => `
+        <div class="row" style="border-bottom:1px dashed var(--border); padding:10px 0;">
+          <div style="display:flex; gap:10px; align-items:center;">
+             <span style="font-size:18px;">${at.icon}</span>
+             <div>
+                <div style="font-size:12.5px; font-weight:600; color:var(--ink);">${at.text}</div>
+                <div style="font-size:10px; color:var(--faint); font-weight:500;">${new Date(at.time).toLocaleDateString('en-GB', {day:'numeric', month:'short'})} · ${new Date(at.time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})} · ${at.status || 'Active'}</div>
+             </div>
+          </div>
+        </div>
+      `).join('');
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function markReminderPaid(id) {
+  try {
+    const res = await fetchApi(`/api/admin/reminder/${id}/pay`, { method: 'PUT' });
+    if (res.success) {
+      showToast("Reminder marked as paid", 'success');
+      loadAdminFees();
+      fetchDashboardData('admin');
+    } else {
+      showToast(res.message, 'error');
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function loadAvailableRooms(block) {
+  const suffix = block ? block.toLowerCase() : '';
+  const select = document.getElementById(`assign-room-id-${suffix}`);
+  if (!select) return;
+  try {
+    const res = await fetchApi(`/api/admin/rooms?status=available${block ? '&block='+block : ''}`);
+    if (res.success && res.data) {
+      if (res.data.length === 0) {
+        select.innerHTML = '<option value="">No available rooms</option>';
+        return;
+      }
+      select.innerHTML = '<option value="">-- Select a room --</option>' + 
+        res.data.map(r => `<option value="${r.id}">${r.room_number} (${r.capacity - r.current_occupancy} beds left)</option>`).join('');
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function submitAdminRoom(block) {
+  const s = block.toLowerCase();
+  const num = document.getElementById(`ar-num-${s}`).value;
+  const cap = document.getElementById(`ar-cap-${s}`).value;
+  const typ = document.getElementById(`ar-type-${s}`).value;
+  const btn = document.getElementById(`ar-btn-${s}`);
+
+  if(!num) return showToast('Room number required','error');
+  fb(btn, 'Creating...','Success');
+  try {
+    const res = await fetchApi('/api/admin/room', {
+      method: 'POST',
+      body: JSON.stringify({ room_number:num, block:block, capacity:cap, type:typ, monthly_rent: 0 })
+    });
+    if(res.success) {
+      loadAdminRooms();
+      document.getElementById(`ar-num-${s}`).value = '';
+    } else showToast(res.message || 'Creation failed','error');
+  } catch(e) { console.error(e); showToast('Error','error'); }
+}
+
+async function submitAssignRoom(block) {
+  const s = block.toLowerCase();
+  const roll = document.getElementById(`assign-roll-${s}`).value.trim();
+  const roomId = document.getElementById(`assign-room-id-${s}`).value;
+  const btn = document.getElementById(`assign-btn-${s}`);
+
+  if (!roll || !roomId) {
+    showToast("Please enter roll number and select a room", 'error');
+    return;
+  }
+
+  fb(btn, 'Assigning...', 'Room Assigned!', true);
+  try {
+    const res = await fetchApi('/api/admin/assign-room', {
+      method: 'POST',
+      body: JSON.stringify({ roll_no: roll, room_id: roomId })
+    });
+    if (res.success) {
+      document.getElementById(`assign-roll-${s}`).value = '';
+      loadAvailableRooms(block);
+      loadAdminRooms();
+      fetchDashboardData('admin');
+      showToast(res.message, 'success');
+    } else {
+      showToast(res.message, 'error');
+    }
+  } catch(e) { console.error(e); }
+}
+
+function getGPStatusPill(status) {
+  if (status === 'approved') return '<span class="pill pg">Approved</span>';
+  if (status === 'rejected') return '<span class="pill pr">Rejected</span>';
+  return '<span class="pill pa">Pending</span>';
+}
+
+function formatDateTime(ds) {
+  if (!ds) return '';
+  const d = new Date(ds);
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour:'2-digit', minute:'2-digit' });
+}
+
+async function loadStudentGatePasses() {
+  const list = document.getElementById('student-gp-list');
+  if (!list) return;
+  try {
+    const res = await fetchApi('/api/student/gatepasses');
+    if (res.success && res.data) {
+      if (res.data.length === 0) {
+        list.innerHTML = '<div class="demo-hint">No gate passes found.</div>';
+        return;
+      }
+      list.innerHTML = res.data.map(gp => {
+        let statusCard = '';
+        if (gp.status === 'approved') {
+           statusCard = `<div style="margin-top:12px; padding:10px; background:var(--green-bg); border:1px solid var(--green-bd); border-radius:var(--r); color:var(--green); text-align:center; font-weight:700; font-size:11.5px;">Your gate pass request is approved ✅</div>`;
+        } else if (gp.status === 'rejected') {
+           statusCard = `<div style="margin-top:12px; padding:10px; background:var(--red-bg); border:1px solid var(--red-bd); border-radius:var(--r); color:var(--red); text-align:center; font-weight:700; font-size:11.5px;">Your gate pass request is rejected ❌</div>`;
+        } else {
+           statusCard = `<div style="margin-top:12px; padding:10px; background:var(--amber-bg); border:1px solid var(--amber-bd); border-radius:var(--r); color:var(--amber); text-align:center; font-weight:700; font-size:11.5px;">Your gate pass request is pending ⏳</div>`;
+        }
+        return `
+        <div class="card" style="margin-bottom:12px;"><div class="card-title">Gate Pass</div>
+          <div class="row"><span class="rl">Destination</span><span class="rv">${gp.destination}</span></div>
+          <div class="row"><span class="rl">Departure</span><span class="rv">${formatDateTime(gp.departure_time)}</span></div>
+          <div class="row"><span class="rl">Return by</span><span class="rv">${formatDateTime(gp.return_time)}</span></div>
+          <div class="row"><span class="rl">Reason</span><span class="rv">${gp.reason}</span></div>
+          ${statusCard}
+        </div>`;
+      }).join('');
+    }
+  } catch(e) {
+     list.innerHTML = '<div class="demo-hint">Failed to load gate passes.</div>';
+  }
+}
+
+async function requestGatePass() {
+  const dest = document.getElementById('sg-dest').value.trim();
+  const dep = document.getElementById('sg-dep').value;
+  const ret = document.getElementById('sg-ret').value;
+  const reason = document.getElementById('sg-reason').value.trim();
+  const btn = document.getElementById('sg-btn');
+
+  if (!dest || !dep || !ret || !reason) {
+    showToast("Please fill all fields", 'error');
+    return;
+  }
+  
+  fb(btn, 'Sending...', 'Request sent!', true);
+  
+  try {
+    const res = await fetchApi('/api/student/gatepass', {
+      method: 'POST',
+      body: JSON.stringify({ destination: dest, departure_time: dep, return_time: ret, reason: reason })
+    });
+    if (res.success) {
+      document.getElementById('sg-dest').value = '';
+      document.getElementById('sg-dep').value = '';
+      document.getElementById('sg-ret').value = '';
+      document.getElementById('sg-reason').value = '';
+      loadStudentGatePasses();
+    } else {
+      showToast(res.message, 'error');
+    }
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+async function loadWardenComplaints() {
+  const cleanList = document.getElementById('w-cleaning-list');
+  const genList = document.getElementById('w-general-complaint-list');
+  const hCard = document.getElementById('w-complaint-history-card');
+  const hList = document.getElementById('w-complaint-history-list');
+  if (!cleanList || !genList) return;
+  try {
+    const res = await fetchApi('/api/warden/complaints');
+    if (res.success && res.data) {
+      const now = new Date();
+      const twentyFourHoursAgo = now.getTime() - (24 * 60 * 60 * 1000);
+
+      const cleaningActive = [];
+      const generalActive = [];
+      const history = [];
+
+      res.data.forEach(c => {
+        const isResolved = c.status === 'resolved' || c.status === 'rejected';
+        const resAt = c.resolved_at || c.updatedAt;
+        const isOld = isResolved && resAt && new Date(resAt).getTime() < twentyFourHoursAgo;
+
+        if (isOld) {
+          history.push(c);
+        } else {
+          if (c.category === 'cleaning' || c.category === 'Housekeeping') {
+            cleaningActive.push(c);
+          } else {
+            generalActive.push(c);
+          }
+        }
+      });
+      
+      const render = (items) => items.length === 0 ? '<div class="demo-hint">No complaints found.</div>' : items.map(c => {
+         const studentObj = c.student || {};
+         const roomObj = studentObj.room || {};
+         const roomTxt = roomObj.room_number ? `${roomObj.block}-${roomObj.room_number}` : 'None';
+         return `
+          <div class="list-item" style="padding:12px 0;">
+            <div class="li-row" style="margin-bottom:8px;">
+               <div>
+                  <div class="li-title">${studentObj.name} (Room ${roomTxt})</div>
+                  <div class="li-meta"><b>${c.subject}</b><br>${c.description}<br><span style="font-size:10px; opacity:0.7;">${formatDate(c.created_at || c.createdAt)}</span></div>
+               </div>
+               <span class="pill ${c.status === 'resolved' ? 'pg' : c.status === 'in_progress' ? 'pb' : 'pa'}">${c.status}</span>
+            </div>
+            ${c.status !== 'resolved' && c.status !== 'rejected' ? `
+              <div style="display:flex;gap:8px;">
+                <button class="btn btn-sm" style="background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:9.5px;padding:4px 10px;cursor:pointer;" onclick="updateWardenComp(${c.id},'in_progress')">In Progress</button>
+                <button class="btn btn-sm" style="background:var(--green);color:#fff;border:none;border-radius:8px;font-size:9.5px;padding:4px 10px;cursor:pointer;" onclick="updateWardenComp(${c.id},'resolved')">Mark Resolved</button>
+              </div>` : ''}
+          </div>
+         `;
+      }).join('');
+
+      cleanList.innerHTML = render(cleaningActive);
+      genList.innerHTML = render(generalActive);
+
+      if (hCard && hList) {
+        if (history.length > 0) {
+          hCard.style.display = 'block';
+          hList.innerHTML = render(history);
+        } else {
+          hCard.style.display = 'none';
+        }
+      }
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function updateWardenComp(id, status) {
+  try {
+    const res = await fetchApi(`/api/warden/complaint/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ status })
+    });
+    if (res.success) {
+      showToast(`Complaint updated to ${status.replace('_',' ')}`, 'success');
+      loadWardenComplaints();
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function loadWardenGatePasses() {
+  const wPending = document.getElementById('w-pending-gp');
+  const wAll = document.getElementById('w-all-gp');
+  if (!wPending && !wAll) return;
+  
+  try {
+    const res = await fetchApi('/api/warden/gatepasses?status=all&limit=50');
+    if (res.success && res.data) {
+      if (wPending) {
+         const pending = res.data.filter(gp => gp.status === 'pending');
+         if (pending.length === 0) {
+           wPending.innerHTML = '<div class="demo-hint">No pending requests.</div>';
+         } else {
+           wPending.innerHTML = pending.map(gp => {
+             const studentObj = gp.student || {};
+             const roomObj = studentObj.room || {};
+             const roomTxt = roomObj.room_number ? `${roomObj.block}-${roomObj.room_number}` : 'No Room';
+             return `
+              <div class="list-item">
+                <div class="li-row"><div><div class="li-title">${studentObj.name} — Room ${roomTxt}</div><div class="li-meta">${formatDateTime(gp.departure_time)} → ${formatDateTime(gp.return_time)}<br>Dest: ${gp.destination}</div></div></div>
+                <div style="display:flex;gap:7px;margin-top:7px;">
+                  <button class="btn btn-sm" style="background:var(--green);color:#fff;border:none;padding:5px 12px;border-radius:12px;font-size:10px;cursor:pointer;" onclick="approveGatePass(${gp.id})">Approve</button>
+                  <button class="btn btn-sm" style="background:var(--red);color:#fff;border:none;padding:5px 12px;border-radius:12px;font-size:10px;cursor:pointer;" onclick="rejectGatePass(${gp.id})">Reject</button>
+                </div>
+              </div>
+             `;
+           }).join('');
+         }
+      }
+      
+      if (wAll) {
+         if (res.data.length === 0) {
+           wAll.innerHTML = '<div class="demo-hint">No passes found.</div>';
+         } else {
+           wAll.innerHTML = res.data.map(gp => {
+             const studentObj = gp.student || {};
+             const roomObj = studentObj.room || {};
+             const roomTxt = roomObj.room_number ? `${roomObj.block}-${roomObj.room_number}` : 'No Room';
+             return `
+              <div class="list-item">
+               <div class="li-row">
+                 <div>
+                   <div class="li-title">${studentObj.name} — Room ${roomTxt}</div>
+                   <div class="li-meta">${gp.destination} · Return: ${formatDateTime(gp.return_time)}</div>
+                 </div>
+                 ${getGPStatusPill(gp.status)}
+               </div>
+              </div>
+             `;
+           }).join('');
+         }
+      }
+    }
+  } catch(e) {
+     console.error(e);
+  }
+}
+
+async function approveGatePass(id) {
+  try {
+    const res = await fetchApi(`/api/warden/gatepass/approve`, {
+      method: 'POST',
+      body: JSON.stringify({ gate_pass_id: id })
+    });
+    if (res.success) {
+      showToast('Gate pass approved', 'success');
+      loadWardenGatePasses();
+      loadWardenActivity();
+      fetchDashboardData('warden');
+    } else {
+      showToast(res.message, 'error');
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function rejectGatePass(id) {
+  try {
+    const res = await fetchApi(`/api/warden/gatepass/reject`, {
+      method: 'POST',
+      body: JSON.stringify({ gate_pass_id: id })
+    });
+    if (res.success) {
+      showToast('Gate pass rejected', 'success');
+      loadWardenGatePasses();
+      fetchDashboardData('warden');
+    } else {
+      showToast(res.message, 'error');
+    }
+  } catch(e) { console.error(e); }
+}
+
+function doLogin() {
+  const err = document.getElementById('lerr');
+  const btn = document.getElementById('sbtn');
+  err.style.display = 'none';
+  let id = '', pass = '', block = '';
+  
+  if (role === 'student') { 
+    id = document.getElementById('sroll').value.trim(); 
+    pass = document.getElementById('spass').value.trim(); 
+  } else if (role === 'admin') { 
+    id = document.getElementById('aid').value.trim(); 
+    pass = document.getElementById('apass').value.trim(); 
+  } else { 
+    id = document.getElementById('wid').value.trim(); 
+    pass = document.getElementById('wpass').value.trim();
+    const b = document.getElementById('wblk').value;
+    block = b.replace('Block ', '');
+  }
+  
+  if (!id || !pass || (role === 'warden' && !block)) {
+    err.textContent = 'Please fill in all fields.';
+    err.style.display = 'block'; 
+    return;
+  }
+  
+  btn.textContent = 'Signing in...'; btn.disabled = true;
+
+  fetchApi('/api/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ identifier: id, password: pass, role, block })
+  })
+  .then(data => {
+    btn.textContent = 'Sign in →'; btn.disabled = false;
+    if (!data.success) {
+      err.textContent = data.message || 'Invalid credentials.';
+      err.style.display = 'block';
+      return;
+    }
+    
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('login').classList.remove('show');
+    
+    if (typeof HostilerzSocket !== 'undefined') {
+      HostilerzSocket.connect(data.token, role, { id: data.user.student_id, block: data.user.block });
+      if (role === 'student') {
+        HostilerzSocket.on("complaintUpdated", () => { loadStudentComplaints(); fetchDashboardData('student'); });
+        HostilerzSocket.on("fineIssued", (d) => { showToast('⚠️ Fine issued: ₹' + d.amount + ' — ' + d.reason, 'error'); loadStudentFees(); });
+        HostilerzSocket.on("fineUpdated", () => { showToast('✅ Your fine has been marked as paid.', 'success'); loadStudentFees(); });
+        HostilerzSocket.on("gatePassApproved", () => { loadStudentGatePasses(); fetchDashboardData('student'); });
+        HostilerzSocket.on("gatePassRejected", () => { loadStudentGatePasses(); fetchDashboardData('student'); });
+        HostilerzSocket.on("newNotice", () => { loadStudentNotices(); });
+        HostilerzSocket.on("feeUpdated", () => { loadStudentFees(); fetchDashboardData('student'); showToast('Fee records updated', 'success'); });
+        HostilerzSocket.on("feeReminder", (d) => { showToast('FEE REMINDER: ' + d.message, 'error'); loadStudentFees(); });
+        HostilerzSocket.on("reminderUpdated", () => { loadStudentFees(); });
+      } else if (role === 'admin') {
+        HostilerzSocket.on("newComplaint", () => { loadAdminComplaints(); loadAdminActivity(); fetchDashboardData('admin'); });
+        HostilerzSocket.on("dataUpdated", (d) => { 
+          if (d.type === 'complaint_updated') { loadAdminComplaints(); loadAdminActivity(); fetchDashboardData('admin'); } 
+          if (d.type === 'student_added' || d.type === 'student_updated') { loadAdminStudents(); fetchDashboardData('admin'); } 
+        });
+      } else if (role === 'warden') {
+        HostilerzSocket.on("newGatePassRequest", () => { loadWardenGatePasses(); fetchDashboardData('warden'); });
+        HostilerzSocket.on("newCleaningComplaint", (d) => { showToast('New cleaning request: ' + d.subject, 'info'); loadWardenComplaints(); });
+        HostilerzSocket.on("newComplaint", () => { loadWardenComplaints(); });
+        HostilerzSocket.on("dataUpdated", (d) => { if (d.type === 'gatepass_approved') loadWardenGatePasses(); fetchDashboardData('warden'); });
+        HostilerzSocket.on("newNotice", () => { loadWardenNotices(); });
+      }
+    }
+    
+    if (role === 'student') {
+      document.getElementById('sname').textContent = data.user.name;
+      document.getElementById('smeta').textContent = data.user.roll_no;
+      openApp('S');
+      fetchDashboardData('student');
+      loadStudentComplaints();
+      loadStudentGatePasses();
+      loadStudentNotices();
+      loadStudentFees();
+      loadStudentRoom();
+    } else if (role === 'admin') {
+      document.getElementById('aname').textContent = data.user.name;
+      openApp('A');
+      fetchDashboardData('admin');
+      loadAdminComplaints();
+      loadAdminStudents();
+      loadAdminFees();
+      loadAdminRooms();
+      loadAdminNotices();
+    } else {
+      document.getElementById('wname').textContent = data.user.name;
+      document.getElementById('wmeta').textContent = `Block ${data.user.block} · KRMU`;
+      openApp('W');
+      fetchDashboardData('warden');
+      loadBlockMap();
+      loadWardenStudents();
+      loadWardenGatePasses();
+      loadWardenActivity();
+      loadWardenFines();
+      loadWardenNotices();
+      loadWardenComplaints();
+    }
+  })
+  .catch(e => {
+    btn.textContent = 'Sign in →'; btn.disabled = false;
+    err.textContent = 'Server error. Try again.';
+    err.style.display = 'block';
+  });
+}
+
+function openApp(p) {
+  document.querySelectorAll('.app').forEach(a => a.classList.remove('on'));
+  const ap = document.getElementById('app' + p);
+  ap.classList.add('on');
+  const pre = { S: 's', A: 'a', W: 'w' }[p];
+  const first = { S: 'h', A: 'd', W: 'o' }[p];
+  ap.querySelectorAll('.section').forEach(s => s.classList.remove('on'));
+  ap.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('on'));
+  document.getElementById(pre + '-' + first).classList.add('on');
+  ap.querySelector('.tab-btn').classList.add('on');
+  window.scrollTo(0, 0);
+}
+
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  if (typeof HostilerzSocket !== 'undefined') HostilerzSocket.disconnect();
+  document.querySelectorAll('.app').forEach(a => a.classList.remove('on'));
+  document.getElementById('land').style.display = 'flex';
+  role = '';
+}
+
+function tab(pre, name, el) {
+  const ap = el.closest('.app');
+  ap.querySelectorAll('.section').forEach(s => s.classList.remove('on'));
+  ap.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('on'));
+  const section = document.getElementById(pre + '-' + name);
+  if (section) section.classList.add('on');
+  el.classList.add('on');
+
+  // Trigger data refreshes
+  if (pre === 's') {
+    if (name === 'f') loadStudentFees();
+    if (name === 'i') loadStudentComplaints();
+    if (name === 'g') loadStudentGatePasses();
+    if (name === 'h') loadStudentNotices();
+    if (name === 'r') loadStudentRoom();
+  } else if (pre === 'w') {
+    if (name === 'o') fetchDashboardData('warden');
+    if (name === 'map') loadBlockMap();
+    if (name === 'comp') loadWardenComplaints();
+    if (name === 'st') loadWardenStudents();
+    if (name === 'g') loadWardenGatePasses();
+    if (name === 'fn') loadWardenFines();
+    if (name === 'n') loadWardenNotices();
+  } else if (pre === 'a') {
+    if (name === 'd') { fetchDashboardData('admin'); loadAdminActivity(); }
+    if (name === 'r') loadAdminRooms();
+    if (name === 's') loadAdminStudents();
+    if (name === 'f') loadAdminFees();
+    if (name === 'c') loadAdminComplaints();
+  }
+}
+
+function fb(btn, loading, success, ok) {
+  const orig = btn.innerHTML;
+  const ob = btn.style.background || '';
+  const oc = btn.style.color || '';
+  btn.textContent = loading; btn.disabled = true; btn.style.opacity = '0.75';
+  setTimeout(() => {
+    btn.textContent = success;
+    btn.style.background = ok ? 'var(--green)' : 'var(--red)';
+    btn.style.color = '#fff'; btn.style.opacity = '1';
+    setTimeout(() => { btn.innerHTML = orig; btn.style.background = ob; btn.style.color = oc; btn.disabled = false; }, 2000);
+  }, 700);
+}
+
+function showToast(msg, type = 'info') {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  let icon = 'ℹ️';
+  if (type === 'error') icon = '❌';
+  if (type === 'success') icon = '✅';
+  toast.innerHTML = `<span>${icon}</span> <span>${msg}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('fade-out');
+    setTimeout(() => { toast.remove(); }, 300);
+  }, 4000);
+}
+
+// ── UTILITIES & MODAL ────────────────────────────────────────────────────────
+function openModal(title, text, confirmLabel, onConfirm) {
+  document.getElementById('m-title').textContent = title;
+  document.getElementById('m-text').textContent = text;
+  const btn = document.getElementById('m-confirm-btn');
+  btn.textContent = confirmLabel;
+  btn.onclick = () => { onConfirm(); closeModal(); };
+  document.getElementById('confirm-modal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('confirm-modal').classList.remove('show');
+}
+
+function scrollToCard(selector) {
+  setTimeout(() => {
+    const el = document.querySelector(selector);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.style.boxShadow = '0 0 15px var(--blue)';
+      setTimeout(() => el.style.boxShadow = '', 2000);
+    }
+  }, 300);
+}
+
+function buildQR() {
+   // Legacy QR functionality completely removed.
+}
+
+async function loadStudentNotices() {
+  const list = document.getElementById('student-notice-list');
+  if (!list) return;
+  try {
+    const res = await fetchApi('/api/student/notices');
+    if (res.success && res.data && res.data.length > 0) {
+      list.innerHTML = res.data.map(n => `
+        <div class="notice" style="background:var(--blue-soft);border-left-color:var(--blue);">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:2px;">
+            <div class="n-title" style="color:var(--blue);">${n.title}</div>
+            <div style="font-size:9px; color:var(--muted); font-weight:600; text-transform:uppercase;">${formatDate(n.created_at || n.createdAt)}</div>
+          </div>
+          <div class="n-body" style="color:var(--ink2);">${n.message}</div>
+        </div>
+      `).join('');
+    } else {
+      list.innerHTML = '<div class="demo-hint">No recent notices.</div>';
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function loadStudentFees() {
+  const list = document.getElementById('student-fee-list');
+  if (!list) return;
+  try {
+    const res = await fetchApi('/api/student/fees');
+    if (!res.success) return;
+    
+    let html = '';
+    const { fees = [], fines = [], reminders = [] } = res.data || {};
+
+    // ── TWO COLUMN LAYOUT CONTENT ──────────────────────────────────
+    html += `
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:16px;">
+        <!-- FINES COLUMN -->
+        <div>
+          <div class="card" style="height:100%;">
+            <div class="card-title" style="color:var(--red);display:flex;align-items:center;gap:8px;">
+               <svg style="width:18px;height:18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+               Pending Fines
+            </div>
+            ${fines.length === 0 ? '<div class="demo-hint" style="padding:20px 0;text-align:center;">No fines issued. ✅</div>' : 
+              fines.map(f => {
+                const isPaid = f.status === 'paid';
+                return `
+                  <div style="padding:12px;border-radius:var(--r);margin-bottom:10px;background:${isPaid ? 'var(--green-bg)' : 'var(--red-bg)'};border:1px solid ${isPaid ? 'var(--green-bd)' : 'var(--red-bd)'};">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                      <div style="font-size:14px;font-weight:800;color:${isPaid ? 'var(--green)' : 'var(--red)'};">₹${parseFloat(f.amount).toFixed(0)}</div>
+                      <span style="font-size:10px;font-weight:700;text-transform:uppercase;">${isPaid ? 'Paid' : 'Due'}</span>
+                    </div>
+                    <div style="font-size:12px;color:var(--ink2);line-height:1.4;">${f.reason}</div>
+                    <div style="font-size:10px;color:var(--muted);margin-top:6px;display:flex;justify-content:space-between;">
+                      <span>${formatDate(f.createdAt)}</span>
+                      ${f.issuedByUser ? `<span>By: ${f.issuedByUser.name}</span>` : ''}
+                    </div>
+                  </div>
+                `;
+              }).join('')
+            }
+          </div>
+        </div>
+
+        <!-- REMINDERS COLUMN -->
+        <div>
+          <div class="card" style="height:100%;">
+            <div class="card-title" style="color:var(--amber);display:flex;align-items:center;gap:8px;">
+               <svg style="width:18px;height:18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+               Fee Reminders
+            </div>
+            ${reminders.length === 0 ? '<div class="demo-hint" style="padding:20px 0;text-align:center;">No pending reminders.</div>' : 
+              reminders.map(r => `
+                <div style="padding:12px;border-radius:var(--r);margin-bottom:10px;background:var(--amber-bg);border:1px solid var(--amber-bd);">
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                    <div style="font-size:13px;font-weight:700;color:var(--amber);">${r.title}</div>
+                  </div>
+                  <div style="font-size:12px;color:var(--ink2);line-height:1.4;">${r.message}</div>
+                  <div style="font-size:10px;color:var(--muted);margin-top:6px;">${formatDate(r.createdAt)}</div>
+                </div>
+              `).join('')
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTORICAL FEES TABLE -->
+      <div class="card" style="margin-top:16px;">
+        <div class="card-title">Billing History</div>
+        ${fees.length === 0 ? '<div class="demo-hint" style="padding:16px 0;">No billing records found.</div>' : 
+          fees.map(f => {
+            const paid = parseFloat(f.paid_amount);
+            const total = parseFloat(f.total_amount);
+            const prog = total > 0 ? (paid/total)*100 : 0;
+            return `
+              <div style="padding:12px 0;border-bottom:1px solid var(--border);">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <div style="font-size:14px;font-weight:700;color:var(--ink);">${f.month}</div>
+                  <span class="pill ${f.status==='paid'?'pg':(f.status==='partial'?'pa':'pr')}">${f.status.toUpperCase()}</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:4px;">
+                  <span>Due: ${formatDate(f.due_date)}</span>
+                  <span style="font-weight:700;color:var(--ink);">₹${paid.toLocaleString()} / ₹${total.toLocaleString()}</span>
+                </div>
+                <div class="progress-bg" style="height:6px;margin-top:8px;"><div class="progress-fill" style="width:${prog}%;background:var(--blue);height:100%; border-radius:10px;"></div></div>
+              </div>
+            `;
+          }).join('')
+        }
+      </div>
+    `;
+    list.innerHTML = html;
+  } catch(e) { 
+    console.error(e); 
+    list.innerHTML = '<div class="demo-hint">Error loading fees section.</div>';
+  }
+}
+
+async function loadAdminStudents() {
+  const list = document.getElementById('admin-student-list');
+  if (!list) return;
+  try {
+    const res = await fetchApi('/api/admin/students?limit=100');
+    if (res.success && res.data) {
+      if (res.data.length === 0) return list.innerHTML = '<tr><td colspan="4"><div class="demo-hint">No students.</div></td></tr>';
+      list.innerHTML = res.data.map(s => `
+        <tr>
+          <td><div style="display:flex;align-items:center;gap:7px;"><div class="avatar" style="background:var(${s.gender==='female'?'--teal-bg':'--blue-soft'});color:var(${s.gender==='female'?'--teal':'--blue'});">${s.name.substring(0,2).toUpperCase()}</div>${s.name}</div></td>
+          <td>${s.roll_no}</td>
+          <td>${s.room_no || 'Unassigned'}</td>
+          <td><span class="pill pb">${s.course}</span></td>
+        </tr>
+      `).join('');
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function submitAdminStudent() {
+  const name = document.getElementById('as-name').value;
+  const roll = document.getElementById('as-roll').value;
+  const cour = document.getElementById('as-course').value;
+  const cont = document.getElementById('as-contact').value;
+  const gen = document.getElementById('as-gender').value;
+  const btn = document.getElementById('as-btn');
+
+  if(!name || !roll) return showToast('Name and Roll No required','error');
+  fb(btn, 'Creating...', 'Success', true);
+  try {
+    const res = await fetchApi('/api/admin/student', {
+      method: 'POST',
+      body: JSON.stringify({ name, roll_no:roll, course:cour, contact:cont, gender:gen })
+    });
+    if(res.success) {
+      loadAdminStudents();
+      fetchDashboardData('admin');
+      document.getElementById('as-name').value = '';
+      document.getElementById('as-roll').value = '';
+    } else showToast(res.message, 'error');
+  } catch(e) { console.error(e); showToast('Error','error'); }
+}
+
+async function loadAdminFees() {
+  const list = document.getElementById('admin-fee-list');
+  if (!list) return;
+  try {
+    const res = await fetchApi('/api/admin/fees?limit=100');
+    if (res.success) {
+      const reminders = res.reminders || [];
+      const fees = res.data || [];
+      let html = '';
+
+      if (reminders.length > 0) {
+        html += '<div style="margin-bottom:10px; font-size:11px; font-weight:800; color:var(--amber); text-transform:uppercase;">Pending Reminders</div>';
+        reminders.forEach(rem => {
+          html += `
+            <div class="list-item" style="border-left: 3px solid var(--amber);">
+              <div class="li-row">
+                <div>
+                  <div class="li-title">${rem.student?.name || 'Student'} (${rem.student?.roll_no || 'N/A'})</div>
+                  <div class="li-meta">${rem.message}</div>
+                </div>
+                <button class="btn btn-sm" style="background:var(--amber); color:#fff; border:none; padding:4px 8px; border-radius:10px; font-size:9px;" onclick="markReminderPaid(${rem.id})">Mark Paid</button>
+              </div>
+            </div>`;
+        });
+      }
+
+      if (fees.length > 0) {
+        html += '<div style="margin:15px 0 10px; font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase;">Recent Fees</div>';
+        fees.forEach(f => {
+          const student = f.student || {};
+          html += `
+            <div class="list-item">
+              <div class="li-row">
+                <div>
+                  <div class="li-title">${student.name} (${student.roll_no})</div>
+                  <div class="li-meta">${f.month} · ${student.room_no || 'No Room'}</div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-weight:700; color:var(--ink);">₹${f.total_amount}</div>
+                  <span class="pill ${f.status==='paid'?'pg':(f.status==='partial'?'pa':'pr')}">${f.status.toUpperCase()}</span>
+                </div>
+              </div>
+            </div>`;
+        });
+      }
+
+      if (html === '') html = '<div class="demo-hint">No fees found.</div>';
+      list.innerHTML = html;
+    }
+  } catch(e) { 
+    console.error(e); 
+    list.innerHTML = '<div class="demo-hint">Error loading fees.</div>';
+  }
+}
+
+async function submitAdminFeeReminderByRollNo() {
+  const roll = document.getElementById('af-roll').value.trim();
+  const btn = document.getElementById('af-roll-btn');
+  if (!roll) return showToast("Enter Roll No", 'error');
+  fb(btn, 'Notifying...', 'Sent!', true);
+  try {
+    const res = await fetchApi('/api/admin/fee-reminder/roll-no', {
+      method: 'POST', body: JSON.stringify({ roll_no: roll })
+    });
+    if (!res.success) {
+      showToast(res.message, 'error');
+    } else {
+      showToast(res.message, 'success');
+      document.getElementById('af-roll').value = '';
+      loadAdminFees();
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function submitAdminFeeReminder() {
+  const rollOrId = document.getElementById('af-feeid').value.trim();
+  const btn = document.getElementById('af-btn');
+  if (!rollOrId) return showToast("Enter Roll No or Fee ID", 'error');
+  fb(btn, 'Sending...', 'Sent!', true);
+  try {
+    // Try sending by roll number first as per new UI
+    const res = await fetchApi('/api/admin/fee-reminder/roll-no', {
+      method: 'POST', body: JSON.stringify({ roll_no: rollOrId })
+    });
+    if (!res.success) {
+      // Fallback to legacy fee-id endpoint if roll NO fails (optional, based on server support)
+      const res2 = await fetchApi('/api/admin/fee-reminder', {
+        method: 'POST', body: JSON.stringify({ fee_id: rollOrId })
+      });
+      if (!res2.success) {
+        showToast(res2.message, 'error');
+      } else {
+        showToast('Fee reminder sent successfully!', 'success');
+        document.getElementById('af-feeid').value = '';
+        loadAdminFees();
+      }
+    } else {
+      showToast(res.message, 'success');
+      document.getElementById('af-feeid').value = '';
+      loadAdminFees();
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function submitAdminNotice() {
+  const t = document.getElementById('ac-noticetitle').value.trim();
+  const m = document.getElementById('ac-noticemsg').value.trim();
+  const d = document.getElementById('ac-noticeduration').value;
+  const btn = document.getElementById('ac-noticebtn');
+  if (!t || !m) return showToast("Enter Title and Message", 'error');
+  fb(btn, 'Publishing...', 'Published!', true);
+  try {
+    const res = await fetchApi('/api/admin/notice', {
+      method: 'POST', body: JSON.stringify({ title: t, message: m, duration: d, target_role: 'all' })
+    });
+    if(res.success) {
+      document.getElementById('ac-noticetitle').value = '';
+      document.getElementById('ac-noticemsg').value = '';
+      loadAdminNotices();
+    } else { showToast(res.message, 'error'); }
+  } catch(e) { console.error(e); }
+}
+
+async function loadAdminNotices() {
+  const list = document.getElementById('admin-notice-list');
+  if (!list) return;
+  try {
+    const res = await fetchApi('/api/admin/notices');
+    if (res.success && res.data) {
+      if (res.data.length === 0) return list.innerHTML = '<div class="demo-hint">No active notices.</div>';
+      list.innerHTML = res.data.map(n => `
+        <div class="list-item"><div class="li-row" style="align-items:center;">
+          <div style="flex:1;">
+            <div class="li-title">${n.title}</div>
+            <div class="li-meta">Expires: ${formatDateTime(n.expires_at)}</div>
+          </div>
+          <button class="btn btn-danger btn-sm" onclick="deleteAdminNotice(${n.id})">Delete</button>
+        </div></div>
+      `).join('');
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function deleteAdminNotice(id) {
+  if(!confirm("Are you sure you want to delete this notice?")) return;
+  try {
+    const res = await fetchApi('/api/admin/notice/' + id, { method: 'DELETE' });
+    if(res.success) {
+       showToast("Notice deleted.", "success");
+       loadAdminNotices();
+    } else { showToast(res.message, "error"); }
+  } catch(e) { console.error(e); }
+}
+
+async function submitWardenFine() {
+  const roll = document.getElementById('wf-roll').value.trim();
+  const amount = document.getElementById('wf-amount').value.trim();
+  const reason = document.getElementById('wf-reason').value.trim();
+  const btn = document.getElementById('wf-btn');
+  if (!roll || !amount || !reason) return showToast('Please fill all fine fields.', 'error');
+  fb(btn, 'Issuing...', 'Fine issued!', true);
+  try {
+    const res = await fetchApi('/api/warden/fine', {
+      method: 'POST',
+      body: JSON.stringify({ roll_no: roll, amount: parseFloat(amount), reason })
+    });
+    if (res.success) {
+      document.getElementById('wf-roll').value = '';
+      document.getElementById('wf-amount').value = '';
+      document.getElementById('wf-reason').value = '';
+      showToast(res.message, 'success');
+      loadWardenFines();
+    } else {
+      showToast(res.message, 'error');
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function loadWardenFines() {
+  const list = document.getElementById('w-fine-list');
+  if (!list) return;
+  try {
+    const res = await fetchApi('/api/warden/fines');
+    if (res.success && res.data) {
+      if (res.data.length === 0) {
+        list.innerHTML = '<div class="demo-hint">No fines issued yet.</div>';
+        return;
+      }
+      list.innerHTML = res.data.map(f => {
+        const isPaid = f.status === 'paid';
+        const bg  = isPaid ? 'var(--green-bg)'  : 'var(--red-bg)';
+        const bd  = isPaid ? 'var(--green-bd)'  : 'var(--red-bd)';
+        const col = isPaid ? 'var(--green)'     : 'var(--red)';
+        const actionBtn = !isPaid
+          ? `<button class="btn btn-sm" style="margin-top:6px;background:var(--green);color:#fff;border:none;padding:4px 12px;border-radius:20px;font-size:10px;cursor:pointer;" onclick="markWardenFinePaid(${f.id})">Mark Paid</button>`
+          : `<span style="font-size:10px;color:var(--green);font-weight:700;">✓ Paid ${f.paid_at ? formatDate(f.paid_at) : ''}</span>`;
+        return `
+          <div style="padding:10px 0;border-bottom:1px solid var(--border);">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+              <div>
+                <div style="font-size:12.5px;font-weight:700;color:var(--ink);">${f.student?.name || f.roll_no}</div>
+                <div style="font-size:10.5px;color:var(--faint);">${f.roll_no} · ${formatDate(f.createdAt)}</div>
+                <div style="font-size:11.5px;color:var(--ink2);margin-top:3px;">${f.reason}</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0;">
+                <div style="font-size:14px;font-weight:800;color:${col};font-family:'JetBrains Mono',monospace;">₹${parseFloat(f.amount).toFixed(0)}</div>
+                <span class="pill" style="background:${bg};color:${col};border:1px solid ${bd};margin-top:3px;">${isPaid ? 'Paid' : 'Unpaid'}</span>
+              </div>
+            </div>
+            ${actionBtn}
+          </div>
+        `;
+      }).join('');
+    }
+  } catch(e) { list.innerHTML = '<div class="demo-hint">Failed to load fines.</div>'; }
+}
+
+async function loadWardenStudents() {
+  const list = document.getElementById('w-student-list');
+  if (!list) return;
+  try {
+    const res = await fetchApi('/api/warden/students');
+    if (res.success && res.data) {
+      if (res.data.length === 0) {
+        list.innerHTML = '<tr><td colspan="4"><div class="demo-hint">No students found in your block.</div></td></tr>';
+        return;
+      }
+      list.innerHTML = res.data.map(s => `
+        <tr>
+          <td>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div class="avatar" style="background:var(--blue-soft); color:var(--blue); width:32px; height:32px; font-size:11px;">
+                ${s.name.substring(0,2).toUpperCase()}
+              </div>
+              <div style="display:flex; flex-direction:column;">
+                <span style="font-weight:700; color:var(--ink); font-size:13px;">${s.name}</span>
+              </div>
+            </div>
+          </td>
+          <td style="font-weight:600; font-family:'JetBrains Mono', monospace; font-size:12px;">${s.roll_no}</td>
+          <td>
+            <span class="pill pb" style="font-size:11px;">${s.room_no || 'Unassigned'}</span>
+          </td>
+          <td style="font-size:12px; color:var(--muted); font-weight:500;">${s.contact || 'N/A'}</td>
+        </tr>
+      `).join('');
+    }
+  } catch(e) {
+    console.error(e);
+    list.innerHTML = '<tr><td colspan="4"><div class="demo-hint">Failed to load student directory.</div></td></tr>';
+  }
+}
+
+async function markWardenFinePaid(id) {
+  try {
+    const res = await fetchApi(`/api/warden/fine/${id}/pay`, { method: 'PUT' });
+    if (res.success) {
+      showToast('Fine marked as paid!', 'success');
+      loadWardenFines();
+    } else {
+      showToast(res.message, 'error');
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function submitWardenNotice() {
+  const t = document.getElementById('wn-title').value.trim();
+  const m = document.getElementById('wn-msg').value.trim();
+  const d = document.getElementById('wn-duration').value;
+  const btn = document.getElementById('wn-btn');
+  if (!t || !m) return showToast('Please enter title and message.', 'error');
+  fb(btn, 'Posting...', 'Posted!', true);
+  try {
+    const res = await fetchApi('/api/warden/notice', {
+      method: 'POST',
+      body: JSON.stringify({ title: t, message: m, duration: d })
+    });
+    if (res.success) {
+      document.getElementById('wn-title').value = '';
+      document.getElementById('wn-msg').value = '';
+      showToast('Notice posted successfully!', 'success');
+      loadWardenNotices();
+    } else {
+      showToast(res.message, 'error');
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function loadWardenNotices() {
+  const list = document.getElementById('w-notice-list');
+  if (!list) return;
+  try {
+    const res = await fetchApi('/api/warden/notices');
+    if (res.success && res.data) {
+      if (res.data.length === 0) {
+        list.innerHTML = '<div class="demo-hint">No active notices.</div>';
+        return;
+      }
+      list.innerHTML = res.data.map(n => `
+        <div class="list-item">
+          <div class="li-row" style="align-items:center;">
+            <div style="flex:1;">
+              <div class="li-title">${n.title}</div>
+              <div class="li-meta">${n.message}</div>
+              <div class="li-meta" style="margin-top:2px;">Expires: ${formatDateTime(n.expires_at)}</div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+  } catch(e) { list.innerHTML = '<div class="demo-hint">Failed to load notices.</div>'; }
+}
+
+async function loadWardenActivity() {
+  const list = document.getElementById('w-activity-list');
+  if (!list) return;
+  try {
+     const res = await fetchApi('/api/warden/gatepasses?status=all&limit=15');
+     if (res.success && res.data) {
+         if (res.data.length === 0) return list.innerHTML = '<div class="demo-hint">No recent activity.</div>';
+         list.innerHTML = res.data.map(gp => `
+           <div class="list-item"><div class="li-row">
+             <div>
+               <div class="li-title">${gp.student?.name || 'Student'} requested Gate Pass</div>
+               <div class="li-meta">${gp.destination} · ${formatDateTime(gp.created_at)}</div>
+             </div>
+             ${getGPStatusPill(gp.status)}
+           </div></div>
+         `).join('');
+     }
+  } catch(e) { console.error(e); }
+}
+
+async function loadStudentRoom() {
+  const c = document.getElementById('student-room-details'); if(!c) return;
+  try {
+    const res = await fetchApi('/api/student/room');
+    if(!res.success || !res.data) return c.innerHTML = `
+      <div class="card" style="text-align:center;padding:32px 16px;">
+        <div style="font-size:40px;margin-bottom:12px;">🏠</div>
+        <div style="font-size:14px;font-weight:700;color:var(--ink);">No Room Assigned</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px;">Contact admin to get a room allotted.</div>
+      </div>
+    `;
+    const r = res.data;
+    const roommates = (r.students || []).filter(s => s.name);
+    const availableBeds = (r.capacity || 0) - (r.current_occupancy || 0);
+    const amenities = r.amenities || {};
+    const hasWifi = amenities.wifi !== false;
+    const hasAC = !!amenities.ac;
+    const hasAttachedBath = !!amenities.attached_bathroom;
+    const cleanStatus = amenities.cleanliness || 'Good';
+    
+    // Store for automated housekeeping
+    currentStudentRoom = r.room_number ? `Room ${r.block}-${r.room_number}` : '';
+
+    const amenChip = (icon, label, active) =>
+      `<span style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:10.5px;font-weight:700;background:${active ? 'var(--green-bg)' : 'var(--red-bg)'};color:${active ? 'var(--green)' : 'var(--red)'};border:1px solid ${active ? 'var(--green-bd)' : 'var(--red-bd)'}">${icon} ${label}</span>`;
+
+    c.innerHTML = `
+      <div class="card">
+        <div class="room-header">
+          <div class="room-num">${r.room_number || 'N/A'}</div>
+          <div>
+            <div style="font-size:17px;font-weight:800;color:var(--ink);">Room ${r.room_number || 'N/A'}</div>
+            <div style="font-size:12px;color:var(--muted);margin:2px 0 6px;">Block ${r.block === 'A' ? 'A (Boys)' : r.block === 'B' ? 'B (Girls)' : (r.block || 'N/A')} · Floor ${r.floor || 1} · ${r.type ? r.type.charAt(0).toUpperCase()+r.type.slice(1) : 'Standard'}</div>
+            <span class="pill pg">Occupied</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 14px;">
+          <div style="background:var(--bg);border-radius:var(--r);padding:10px 12px;text-align:center;">
+            <div style="font-size:20px;font-weight:800;color:var(--blue);font-family:'JetBrains Mono',monospace;">${r.capacity || 'N/A'}</div>
+            <div style="font-size:10px;color:var(--muted);font-weight:600;">Total Beds</div>
+          </div>
+          <div style="background:var(--bg);border-radius:var(--r);padding:10px 12px;text-align:center;">
+            <div style="font-size:20px;font-weight:800;color:${availableBeds > 0 ? 'var(--green)' : 'var(--red)'};font-family:'JetBrains Mono',monospace;">${availableBeds}</div>
+            <div style="font-size:10px;color:var(--muted);font-weight:600;">Available Beds</div>
+          </div>
+        </div>
+        <div class="card-title">Amenities</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;">
+          ${amenChip('📶', 'Wi-Fi', hasWifi)}
+          ${amenChip('❄️', 'AC', hasAC)}
+          ${amenChip('🚿', 'Attached Bath', hasAttachedBath)}
+          ${amenChip('🧹', 'Cleanliness: '+cleanStatus, cleanStatus === 'Good' || cleanStatus === 'Excellent')}
+        </div>
+      </div>
+      ${ roommates.length > 0 ? `
+      <div class="card">
+        <div class="card-title">Roommates (${roommates.length})</div>
+        ${roommates.map(s => `
+          <div class="vi-row">
+            <div>
+              <div class="vi-name">${s.name}</div>
+              <div class="vi-meta">${s.roll_no}${s.course ? ' · ' + s.course : ''}</div>
+            </div>
+            <span class="pill pg">Active</span>
+          </div>
+        `).join('')}
+      </div>` : '' }
+      <div class="card">
+        <div class="card-title">Quick Actions</div>
+        <button class="btn btn-outline premium-card" style="margin-top:0; border:1.5px solid var(--blue); border-radius:16px; background:var(--blue-soft); overflow:hidden;" onclick="openHousekeepingModal()">
+          🧹 Raise Housekeeping Complaint
+        </button>
+      </div>
+    `;
+  } catch(e) { console.error(e); }
+}
+
+async function loadAdminRooms() {
+  const cA = document.getElementById('admin-room-grid-a');
+  const cB = document.getElementById('admin-room-grid-b');
+  if(!cA || !cB) return;
+  try {
+    const res = await fetchApi('/api/admin/rooms');
+    if(!res.success || !res.data) return;
+    
+    const render = (rooms) => rooms.length === 0 ? '<div class="demo-hint" style="grid-column:span 4;">No rooms.</div>' : rooms.map(r => {
+      let cls = 'rc-vac';
+      if (r.status === 'occupied') cls = 'rc-occ';
+      if (r.status === 'maintenance') cls = 'rc-mnt';
+      const occupancyText = r.current_occupancy >= r.capacity ? 'Full' : `${r.current_occupancy}/${r.capacity}`;
+      return `
+        <div class="room-cell ${cls}" onclick="showRoomDetails(${JSON.stringify(r).replace(/"/g, '&quot;')})">
+          ${r.room_number}
+          <span>${occupancyText}</span>
+        </div>
+      `;
+    }).join('');
+
+    cA.innerHTML = render(res.data.filter(r => r.block === 'A'));
+    cB.innerHTML = render(res.data.filter(r => r.block === 'B'));
+
+    loadAvailableRooms('A');
+    loadAvailableRooms('B');
+  } catch(e) { console.error(e); }
+}
+
+async function loadWardenStudents() {
+  const c = document.getElementById('w-student-list'); if(!c) return;
+  try {
+    const res = await fetchApi('/api/warden/students');
+    if(!res.success || !res.data || res.data.length === 0) return c.innerHTML = '<tr><td colspan="4"><div class="demo-hint">No students found in your block.</div></td></tr>';
+    c.innerHTML = res.data.map(s => `
+      <tr>
+        <td><div style="display:flex;align-items:center;gap:7px;"><div class="avatar" style="background:var(--blue-soft);color:var(--blue);">${s.name.substring(0,2).toUpperCase()}</div>${s.name}</div></td>
+        <td>${s.roll_no}</td>
+        <td>${s.room_no || 'N/A'}</td>
+        <td style="font-weight:700; color:var(--blue);">${s.contact || 'N/A'}</td>
+      </tr>
+    `).join('');
+  } catch(e) { console.error(e); }
+}
+
+async function loadWardenVisitors() {
+  const cLog = document.getElementById('w-visitor-log'); if(!cLog) return;
+  try {
+    const res = await fetchApi('/api/warden/visitors');
+    if(!res.success || !res.data || res.data.length === 0) return cLog.innerHTML = '<div class="demo-hint">No visitors.</div>';
+    cLog.innerHTML = res.data.map(v => `<div class="vi-row"><div><div class="vi-name">${v.visitor_name}</div><div class="vi-meta">Host: ${v.student?v.student.name:'N/A'}</div></div><span class="pill pg">Logged</span></div>`).join('');
+  } catch(e) { console.error(e); }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('login').classList.contains('show')) doLogin();
+});
+
+// ── SESSION RESTORE ON PAGE LOAD ─────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', async () => {
+  // Always load public stats for landing page
+  loadPublicStats();
+
+  const token = localStorage.getItem('token');
+  const userData = localStorage.getItem('user');
+  if (!token || !userData) return; // No session — show landing
+
+  try {
+    const res = await fetch(SERVER_URL + '/api/auth/me', {
+      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+    });
+    const data = await res.json();
+    if (!data.success) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      return; // Token invalid — stay on landing
+    }
+
+    const user = JSON.parse(userData);
+    role = user.role;
+
+    // Hide landing/login
+    document.getElementById('land').style.display = 'none';
+    document.getElementById('login').style.display = 'none';
+
+    // Reconnect socket
+    if (typeof HostilerzSocket !== 'undefined') {
+      HostilerzSocket.connect(token, role, { id: user.student_id, block: user.block });
+      if (role === 'student') {
+        HostilerzSocket.on("complaintUpdated", () => { loadStudentComplaints(); fetchDashboardData('student'); });
+        HostilerzSocket.on("gatePassApproved", () => { loadStudentGatePasses(); fetchDashboardData('student'); });
+        HostilerzSocket.on("gatePassRejected", () => { loadStudentGatePasses(); fetchDashboardData('student'); });
+        HostilerzSocket.on("newNotice", () => { loadStudentNotices(); });
+        HostilerzSocket.on("fineIssued", (d) => { showToast('⚠️ Fine: ₹' + d.amount + ' — ' + d.reason, 'error'); loadStudentFees(); });
+        HostilerzSocket.on("fineUpdated", () => { showToast('Fine marked as paid!', 'success'); loadStudentFees(); });
+        HostilerzSocket.on("feeUpdated", () => { loadStudentFees(); fetchDashboardData('student'); });
+      } else if (role === 'admin') {
+        HostilerzSocket.on("newComplaint", () => { loadAdminComplaints(); });
+        HostilerzSocket.on("dataUpdated", () => { loadAdminComplaints(); loadAdminStudents(); loadAdminFees(); fetchDashboardData('admin'); });
+      } else if (role === 'warden') {
+        HostilerzSocket.on("newGatePassRequest", () => { loadWardenGatePasses(); fetchDashboardData('warden'); });
+        HostilerzSocket.on("newNotice", () => { loadWardenNotices(); });
+      }
+    }
+
+    // Restore dashboard for the right role
+    if (role === 'student') {
+      document.getElementById('sname').textContent = user.name;
+      document.getElementById('smeta').textContent = (user.roll_no || '') + ' · Student';
+      openApp('S');
+      fetchDashboardData('student');
+      loadStudentComplaints();
+      loadStudentGatePasses();
+      loadStudentNotices();
+      loadStudentFees();
+      loadStudentRoom();
+    } else if (role === 'admin') {
+      document.getElementById('aname').textContent = user.name;
+      openApp('A');
+      fetchDashboardData('admin');
+      loadAdminComplaints();
+      loadAdminStudents();
+      loadAdminFees();
+      loadAdminRooms();
+      loadAdminNotices();
+    } else if (role === 'warden') {
+      document.getElementById('wname').textContent = user.name;
+      document.getElementById('wmeta').textContent = `Block ${user.block} · KRMU`;
+      openApp('W');
+      fetchDashboardData('warden');
+      loadBlockMap();
+      loadWardenStudents();
+      loadWardenGatePasses();
+      loadWardenActivity();
+      loadWardenFines();
+      loadWardenNotices();
+      loadWardenComplaints();
+    }
+  } catch(e) {
+    // Network error — clear session and stay on landing
+    console.error('Session restore failed:', e);
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  }
+});
+
+async function openHousekeepingModal() {
+  const room = currentStudentRoom || 'your room';
+  openModal(
+    '🧹 Confirm Request',
+    `Are you sure you want to request cleaning for ${room}? This will notify your floor warden.`,
+    'Confirm Request',
+    () => submitHousekeepingComplaint(document.querySelector('button[onclick="openHousekeepingModal()"]'))
+  );
+}
+
+async function loadBlockMap() {
+  const c = document.getElementById('warden-room-grid');
+  if (!c) return;
+  try {
+    const userStr = localStorage.getItem('user');
+    if (!userStr) return;
+    const user = JSON.parse(userStr);
+    const block = user.block;
+    const res = await fetchApi(`/api/warden/rooms`);
+    if (res.success && res.data) {
+      if (res.data.length === 0) {
+        c.innerHTML = '<div class="demo-hint" style="grid-column: span 4;">No rooms found in your block.</div>';
+        return;
+      }
+      c.innerHTML = res.data.map(r => {
+        let cls = 'rc-vac';
+        if (r.status === 'occupied') cls = 'rc-occ';
+        if (r.status === 'maintenance') cls = 'rc-mnt';
+        
+        const occupancyText = r.current_occupancy >= r.capacity ? 'Full' : `${r.current_occupancy}/${r.capacity}`;
+        
+        return `
+          <div class="room-cell ${cls}" onclick="showRoomDetails(${JSON.stringify(r).replace(/"/g, '&quot;')})">
+            ${r.room_number}
+            <span>${occupancyText}</span>
+          </div>
+        `;
+      }).join('');
+    }
+  } catch(e) { console.error(e); }
+}
+
+function showRoomDetails(r) {
+  const studentsHtml = r.students && r.students.length > 0 
+    ? r.students.map(s => `
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #f0f0f0;">
+          <div style="display:flex; flex-direction:column;">
+            <span style="font-weight:700; color:var(--ink); font-size:13px;">${s.name}</span>
+            <span style="font-size:10.5px; color:var(--muted); font-weight:600;">Roll: ${s.roll_no}</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="pill pg" style="font-size:9.5px; padding:3px 8px;">Resident</span>
+            <button class="btn" style="padding:6px 10px; font-size:10px; font-weight:700; background:var(--blue-soft); color:var(--blue); border:1px solid var(--blue-bd); border-radius:8px; cursor:pointer;" onclick="initiateTransfer('${s.roll_no}', '${s.name.replace(/'/g, "\\'")}', '${r.block}')">Transfer</button>
+          </div>
+        </div>
+      `).join('')
+    : '<div class="demo-hint" style="padding:15px 0; text-align:center;">This room is currently empty.</div>';
+
+  const userStr = localStorage.getItem('user');
+  const user = userStr ? JSON.parse(userStr) : null;
+  const isWarden = user && user.role === 'warden';
+  const isAdmin = user && user.role === 'admin';
+  
+  let controlHtml = '';
+  if (isWarden) {
+    controlHtml = `
+      <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:8px;">
+        <div style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px;">Manager Controls</div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn" style="flex:1; border:1px solid var(--amber-bd); background:var(--amber-bg); color:var(--amber); font-size:11px; padding:10px; cursor:pointer; border-radius:10px;" onclick="updateRoomStatus(${r.id}, 'maintenance')">Set Maintenance</button>
+          <button class="btn" style="flex:1; border:1px solid var(--red-bd); background:var(--red-bg); color:var(--red); font-size:11px; padding:10px; cursor:pointer; border-radius:10px;" onclick="updateRoomStatus(${r.id}, 'available')">Mark Empty</button>
+        </div>
+        <p style="font-size:10.5px; color:var(--muted); margin:0;">* Marking as Empty will remove all assigned students.</p>
+      </div>
+    `;
+  } else if (isAdmin) {
+    controlHtml = `
+      <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:8px;">
+        <div style="font-size:11px; font-weight:800; color:var(--blue); text-transform:uppercase; letter-spacing:0.5px;">Admin Quick Actions</div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn" style="flex:1; border:1px solid var(--amber-bd); background:var(--amber-bg); color:var(--amber); font-size:11px; padding:12px; cursor:pointer; border-radius:10px;" onclick="updateRoomStatus(${r.id}, 'maintenance')">🛠️ Maintenance Mode</button>
+          <button class="btn" style="flex:1; border:1px solid var(--border); background:var(--bg); color:var(--muted); font-size:11px; padding:12px; cursor:pointer; border-radius:10px;" onclick="Swal.close()">Close Panel</button>
+        </div>
+      </div>
+    `;
+  }
+
+  Swal.fire({
+    title: `<div style="font-size:18px; font-weight:900; color:var(--ink2); display:flex; align-items:center; justify-content:center; gap:10px;">
+              <span style="font-size:24px;">🏢</span> Room ${r.room_number} — ${r.block} Block
+            </div>`,
+    html: `
+      <div style="text-align:left;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; background:var(--bg); padding:10px 14px; border-radius:12px; border:1px solid var(--border);">
+          <span style="font-size:13px; font-weight:700; color:var(--muted);">STATUS</span>
+          <span class="pill ${r.status==='available'?'pg':r.status==='maintenance'?'pa':'pb'}">${r.status.toUpperCase()}</span>
+        </div>
+        <div style="background:var(--white); border:1px solid var(--border); border-radius:16px; padding:18px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="font-size:11px; font-weight:800; color:var(--muted); margin-bottom:12px; text-transform:uppercase; letter-spacing:0.8px; border-bottom:1px solid var(--border); padding-bottom:8px;">Current Occupants (${r.current_occupancy}/${r.capacity})</div>
+          ${studentsHtml}
+        </div>
+        ${controlHtml}
+      </div>
+    `,
+    showConfirmButton: false,
+    showCloseButton: true,
+    padding: '28px',
+    borderRadius: '24px',
+    width: '420px'
+  });
+}
+
+async function initiateTransfer(rollNo, name, currentBlock) {
+  Swal.fire({
+    title: '🔄 Student Transfer',
+    text: `Redirecting to transfer ${name}...`,
+    timer: 800,
+    showConfirmButton: false,
+    didOpen: () => Swal.showLoading()
+  });
+
+  // Highlight and pre-fill the allotment form
+  const sectionId = currentBlock === 'A' ? 'A' : 'B';
+  const targetForm = document.getElementById(`assign-roll-${sectionId.toLowerCase()}`);
+  const targetSelect = document.getElementById(`assign-room-id-${sectionId.toLowerCase()}`);
+  
+  if (targetForm) {
+    targetForm.value = rollNo;
+    targetForm.style.borderColor = 'var(--blue)';
+    targetForm.style.boxShadow = '0 0 0 4px var(--blue-soft)';
+    
+    // Smooth scroll to the allotment card
+    const container = document.getElementById('a-r');
+    if (container) {
+      targetForm.closest('.card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    
+    // Focus the room selector
+    setTimeout(() => {
+      targetSelect.focus();
+      targetForm.style.transition = 'all 1s ease';
+      targetForm.style.borderColor = '';
+      targetForm.style.boxShadow = '';
+    }, 1200);
+  }
+}
+
+async function updateRoomStatus(roomId, status) {
+  if (status === 'available' && !confirm('Are you sure you want to mark this room as empty? This will remove all assigned students.')) return;
+  
+  try {
+    const btn = event.target || {};
+    const oldTxt = btn.innerText;
+    if(btn.innerText) { btn.innerText = 'Updating...'; btn.disabled = true; }
+
+    const res = await fetchApi(`/api/warden/room/${roomId}/status`, {
+      method: 'PUT',
+      body: JSON.stringify({ status })
+    });
+    if(res.success) {
+      showToast('Status updated!', 'success');
+      Swal.close();
+      if (typeof loadBlockMap === 'function') loadBlockMap();
+      if (typeof loadAdminRooms === 'function') loadAdminRooms();
+    } else {
+      showToast(res.message || 'Update failed', 'error');
+      if(btn.innerText) { btn.innerText = oldTxt; btn.disabled = false; }
+    }
+  } catch(e) {
+    console.error(e);
+    showToast('Server error', 'error');
+  }
+}
+
+// buildQR();
+</script>
+</body>
+</html>
