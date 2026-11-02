@@ -15,7 +15,7 @@
  */
 
 const HostilerzSocket = (() => {
-  const SERVER_URL = "http://localhost:5000"; // change to your deployed URL
+  const SERVER_URL = (typeof window !== "undefined" && window.location.origin && window.location.origin.startsWith("http")) ? window.location.origin : "http://localhost:5000";
   let socket = null;
 
   /**
